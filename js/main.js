@@ -1,7 +1,7 @@
 // main.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
 import {
-    getFirestore, collection, addDoc, getDocs, setDoc, doc
+    getFirestore, collection, addDoc, getDocs, setDoc, doc, updateDoc, increment, runTransaction
 } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -36,6 +36,9 @@ async function cargarDatosIniciales() {
         }
         for (let cliente of dataInicial.clientes) {
             await addDoc(collection(db, "clientes"), cliente);
+        }
+        for (let contador of dataInicial.contadores) {
+            await addDoc(collection(db, "contadores"), contador);
         }
         console.log("✅ Datos iniciales cargados");
     } catch (e) {
@@ -186,7 +189,7 @@ export function initAppLogic() {
 
         document.getElementById('btn-generar-pedido').addEventListener('click', async () => {
             const cocteles = Array.from(cart.values()).map(({ id, nombre, cantidad, imagen, descripcion }) => ({ id, nombre, cantidad, imagen, descripcion }));
-            
+
             if (cocteles.length === 0) {
                 alert("⚠️ Debes seleccionar al menos un cóctel 🍸");
                 return;
@@ -195,6 +198,7 @@ export function initAppLogic() {
             const pedido = {
                 fecha: getFechaActual(),
                 estado: 'Pendiente',
+                turno: await generarTurno(),
                 cocteles: Object.keys(cocteles).map(id => ({
                     id: cocteles[id].id,
                     nombre: cocteles[id].nombre,
@@ -220,4 +224,28 @@ export function initAppLogic() {
     } else {
         start();
     }
+}
+
+
+async function generarTurno() {
+  // Colección "contadores", documento "general"
+  const turnoDoc = doc(db, "contadores", "general");
+
+  const nuevoTurno = await runTransaction(db, async (transaction) => {
+    const docSnap = await transaction.get(turnoDoc);
+
+    if (!docSnap.exists()) {
+      // Si no existe el documento, lo creamos con turno = 1
+      transaction.set(turnoDoc, { turno: 1 });
+      return 1;
+    }
+
+    const actual = docSnap.data().turno || 0;
+    const siguiente = actual + 1;
+    transaction.update(turnoDoc, { turno: siguiente });
+    return siguiente;
+  });
+
+  // Dar formato tipo A001, A002, etc.
+  return `A${String(nuevoTurno).padStart(3, "0")}`;
 }

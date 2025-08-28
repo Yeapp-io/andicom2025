@@ -50,24 +50,24 @@
     .pedido-vertical img {
       border-radius: 6px;
     }
-
   </style>
 </head>
 
 <body>
   <h1 class="banner-title" style="margin: 5rem 0;">Revisa la información de tu pedido aquí</h1>
-  <div style="display: flex; flex-direction: column; align-items: center;">
+  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
     <canvas id="qr"></canvas>
-    <h4 class="banner-desc">Fecha: 2025-08-27 13:19:26</h4>
-    <h4 class="banner-desc">Estado: Pendiente</h4>
+
   </div>
 
-  <h2 class="banner-title">Detalle del pedido</h2>
-  <div id="pedido-detalle">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <div style="margin: 2rem;" id="pedido-detalle">
 
+    </div>
   </div>
   <div>
-    <button style="font-size:2.5rem;" onclick="window.location.href='index.html'" class="btn btn-primary" style="margin: 2rem 0; font-size:2rem;">
+    <button style="font-size:2.5rem;" onclick="window.location.href='index.html'" class="btn btn-primary"
+      style="margin: 2rem 0; font-size:2rem;">
       Volver al inicio
     </button>
   </div>
@@ -145,7 +145,7 @@
       // 📲 Generar QR
       const qrContainer = document.getElementById("qr");
       qrContainer.innerHTML = "";
-      QRCode.toCanvas(qrContainer, window.location.href, { width: 500 }, function (error) {
+      QRCode.toCanvas(qrContainer, window.location.href, { width: 400 }, function (error) {
         if (error) console.error(error);
       });
     }
@@ -154,6 +154,33 @@
       const contenedor = document.getElementById("pedido-detalle");
       contenedor.innerHTML = "";
 
+      // Crear contenedor principal
+      const wrapper = document.createElement("div");
+      wrapper.style.display = "flex";
+      wrapper.style.flexDirection = "column";
+      wrapper.style.alignItems = "center";
+
+      // Fecha
+      const fecha = document.createElement("h4");
+      fecha.classList.add("banner-desc");
+      fecha.textContent = `Fecha: ${pedido.fecha}`;
+      wrapper.appendChild(fecha);
+
+      // Estado
+      const estado = document.createElement("h4");
+      estado.classList.add("banner-desc");
+      estado.textContent = `Turno: ${pedido.turno}`;
+      wrapper.appendChild(estado);
+
+      // Título
+      const titulo = document.createElement("h2");
+      titulo.classList.add("banner-title");
+      titulo.textContent = "Detalle del pedido";
+      wrapper.appendChild(titulo);
+
+      // Contenedor de cocteles
+      const detalle = document.createElement("div");
+      detalle.id = "pedido-detalle-cocteles";
 
       pedido.cocteles.forEach(item => {
         const tabla = document.createElement("table");
@@ -166,8 +193,13 @@
       <tr><th>Cantidad</th><td>${item.cantidad}</td></tr>
     `;
 
-        contenedor.appendChild(tabla);
+        detalle.appendChild(tabla);
       });
+
+      wrapper.appendChild(detalle);
+
+      // Render final en el contenedor
+      contenedor.appendChild(wrapper);
     }
 
 
