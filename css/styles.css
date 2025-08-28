@@ -24,7 +24,7 @@ body {
 }
 
 body.bg-home .bg-transition {
-    background-image: url(../img/Pantalla\ inicio_Mesa\ de\ trabajo\ 1.jpg);
+    background-image: url(../img/FondoInicio.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -66,7 +66,7 @@ body.bg-pedido .bg-transition {
     width: 90%;
     border: 5px solid var(--magenta);
 
-    margin-top: 50px;
+    margin-top: 200px;
 }
 
 /* Botones de navegación */
@@ -142,21 +142,20 @@ body.bg-pedido .bg-transition {
 }
 
 .banner-inner {
-    background-color: rgba(0, 0, 0, 0.55);
-    /* negro con 55% opacidad */
-    border-radius: 18px;
     padding: 2rem;
 }
 
 .banner-title {
     color: var(--blanco);
-    font-size: 6rem;
+    font-size: 4rem;
     letter-spacing: 0.5px;
+    text-align: center;
 }
 
 .banner-title-menu {
     font-size: 2.5rem;
     letter-spacing: 0.5px;
+    text-align: center;
 }
 
 #menu-section {
@@ -169,7 +168,9 @@ body.bg-pedido .bg-transition {
 
 .banner-desc {
     font-size: 3rem;
-    margin: 0 1rem 2rem 1rem;
+    margin: 3rem 1rem;
+    text-align: center;
+
 }
 
 .btn {
@@ -196,8 +197,10 @@ body.bg-pedido .bg-transition {
 }
 
 .btn-primary {
-    background: var(--dorado);
+    margin: 3rem 1rem;
+    background: var(--magenta);
     color: var(--blanco);
+    font-size: 3rem;
 }
 
 .btn-primary:hover {
