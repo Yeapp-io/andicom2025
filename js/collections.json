@@ -1,0 +1,74 @@
+{
+    "cocteles": [
+        {
+            "id_coctel": 1,
+            "nombre": "MOJITO FRUTOS ROJOS – LEYARD PLANAR",
+            "descripcion": "6 cl de Ron Dos Maderas P.X. ½ lima (en dados). 2 g de azúcar moscovado. 1 mora. 1 frambuesa. ½ fresa 8 u 10 hojas de menta. Top de soda",
+            "imagen": "/img/perfect-serve-1024x1024.jpg",
+            "estado": "Activo",
+            "disponibles": 10
+        },
+        {
+            "id_coctel": 2,
+            "nombre": "MEZCALITA DE PIÑA– TD SYNNEX/ AWS",
+            "descripcion": "1 ½ oz. Mezcal. 1 oz. Jugo de limón. ½ oz. Miel de agave. Hielo. 1 rebanada de piña en almíbar. 1 Chile jalapeño. Hojas de menta. Sal de Gusano Rojo Delinsect.",
+            "imagen": "/img/perfect-serve-1024x1024.jpg",
+            "estado": "Activo",
+            "disponibles": 10
+        },
+        {
+            "id_coctel": 3,
+            "nombre": "MEZCAL SPRITZ – TREND MICRO",
+            "descripcion": "2 oz de Mezcal. 1 oz de Aperol. ½ oz de Vino tinto. Vino espumoso. Hielo al gusto. Garnitura: 1 ramita de romero",
+            "imagen": "/img/perfect-serve-1024x1024.jpg",
+            "estado": "Activo",
+            "disponibles": 10
+        },
+        {
+            "id_coctel": 4,
+            "nombre": "MINT JULEP – STELLAR CYBER",
+            "descripcion": "60 ml de Bourbon. 20 ml de jarabe de azúcar, o una cucharada de azúcar y 2 de agua. Hojas de menta o hierbabuena. Una ramita de menta o hierbabuena para adornar. Hielo Cocktail de Cubers.",
+            "imagen": "/img/perfect-serve-1024x1024.jpg",
+            "estado": "Activo",
+            "disponibles": 10
+        },
+        {
+            "id_coctel": 5,
+            "nombre": "CAIPIROSKA - SAMSUNG",
+            "descripcion": "3 limones de pica, cortadas en cuartos. 3 cucharadas de azúcar. 3/4 tazas de vodka. Hielo molido.",
+            "imagen": "/img/perfect-serve-1024x1024.jpg",
+            "estado": "Activo",
+            "disponibles": 10
+        }
+    ],
+    "pedidos": [
+        {
+            "fecha": "2025-08-27 23:51:09",
+            "estado": "Pruebas",
+            "cocteles": [
+                {
+                    "id": "w5eghv1u3VsqbWvdZ9CH",
+                    "nombre": "MEZCAL SPRITZ – TREND MICRO",
+                    "cantidad": 1,
+                    "imagen": "/img/perfect-serve-1024x1024.jpg",
+                    "descripcion": "2 oz de Mezcal. 1 oz de Aperol. ½ oz de Vino tinto. Vino espumoso. Hielo al gusto. Garnitura: 1 ramita de romero"
+                },
+                {
+                    "id": "zZxK32lYrvE17kulA52u",
+                    "nombre": "CAIPIROSKA - SAMSUNG",
+                    "cantidad": 2,
+                    "imagen": "/img/perfect-serve-1024x1024.jpg",
+                    "descripcion": "3 limones de pica, cortadas en cuartos. 3 cucharadas de azúcar. 3/4 tazas de vodka. Hielo molido."
+                }
+            ]
+        }
+    ],
+    "clientes": [
+        {
+            "nombre": "Cristian",
+            "apellidos": "Pruebas",
+            "correo": "carevalo@example.com",
+            "telefono": "3111111111"
+        }
+    ]
+}

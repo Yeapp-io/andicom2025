@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App Cócteles</title>
+  <link rel="stylesheet" href="./css/pedido.css">
+  <style>
+    /* table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background: #f4f4f4;
+    } */
+
+
+    .pedido-vertical {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px auto;
+      background-color: transparent;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .pedido-vertical th {
+      text-align: left;
+      padding: 10px;
+      background: #d4af37;
+      width: 120px;
+    }
+
+    .pedido-vertical td {
+      padding: 10px;
+      background-color: transparent;
+    }
+
+    .pedido-vertical img {
+      border-radius: 6px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <h1 class="banner-title" style="margin: 5rem 0;">Revisa la información de tu pedido aquí</h1>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <canvas id="qr"></canvas>
+    <h4 class="banner-desc">Fecha: 2025-08-27 13:19:26</h4>
+    <h4 class="banner-desc">Estado: Pendiente</h4>
+  </div>
+
+  <h2 class="banner-title">Detalle del pedido</h2>
+  <div id="pedido-detalle">
+
+  </div>
+  <div>
+    <button style="font-size:2.5rem;" onclick="window.location.href='index.html'" class="btn btn-primary" style="margin: 2rem 0; font-size:2rem;">
+      Volver al inicio
+    </button>
+  </div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+
+    // 🔧 Config Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXuxvb6yQgK9UYI7s9Ez89L2btjVypyQs",
+      authDomain: "app-cocteles-56536.firebaseapp.com",
+      projectId: "app-cocteles-56536",
+      storageBucket: "app-cocteles-56536.appspot.com",
+      messagingSenderId: "137807744816",
+      appId: "1:137807744816:web:61fcba05330f2a128d02f5",
+      measurementId: "G-ZSCCQ6919V"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // 🔎 Obtener ID del pedido desde la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const pedidoId = urlParams.get("id");
+
+    const pedidoBody = document.getElementById("pedido-body");
+
+    async function cargarPedido() {
+      let pedido = null;
+
+      // 1️⃣ Primero buscar en localStorage
+      const localData = localStorage.getItem(pedidoId);
+      if (localData) {
+        console.log("Pedido cargado desde localStorage");
+        pedido = JSON.parse(localData);
+      } else {
+        // 2️⃣ Si no está en localStorage, buscar en Firestore
+        console.log("Buscando pedido en Firestore...");
+        const pedidoRef = doc(db, "pedidos", pedidoId);
+        const pedidoSnap = await getDoc(pedidoRef);
+        if (pedidoSnap.exists()) {
+          pedido = pedidoSnap.data();
+          // Guardar en localStorage para futuras cargas offline
+          localStorage.setItem(pedidoId, JSON.stringify(pedido));
+        } else {
+          alert("Pedido no encontrado");
+          return;
+        }
+      }
+
+      // 📝 Renderizar tabla
+      console.log("Esto es pedido :D ", pedido);
+
+      renderPedido(pedido);
+
+      // pedidoBody.innerHTML = "";
+      // if (pedido.cocteles && Array.isArray(pedido.cocteles)) {
+      //   pedido.cocteles.forEach(coctel => {
+      //     const row = document.createElement("tr");
+      //     row.innerHTML = `
+      //       <td>
+      //         <img src="${coctel.imagen || './img/default.jpg'}" alt="${coctel.nombre}" style="width:80px; border-radius:8px;">
+      //       </td>
+      //       <td>${coctel.nombre}</td>
+      //       <td>${coctel.descripcion || 'Sin descripción'}</td>
+      //       <td>${coctel.cantidad}</td>
+      //     `;
+      //     pedidoBody.appendChild(row);
+      //   });
+      // }
+
+      // 📲 Generar QR
+      const qrContainer = document.getElementById("qr");
+      qrContainer.innerHTML = "";
+      QRCode.toCanvas(qrContainer, window.location.href, { width: 500 }, function (error) {
+        if (error) console.error(error);
+      });
+    }
+
+    function renderPedido(pedido) {
+      const contenedor = document.getElementById("pedido-detalle");
+      contenedor.innerHTML = "";
+
+
+      pedido.cocteles.forEach(item => {
+        const tabla = document.createElement("table");
+        tabla.classList.add("pedido-vertical");
+
+        tabla.innerHTML = `
+      <tr><th>Imagen</th><td><img src="${item.imagen || './img/default.jpg'}" alt="${item.nombre}" width="100"></td></tr>
+      <tr><th>Nombre</th><td>${item.nombre}</td></tr>
+      <tr><th>Descripción</th><td>${item.descripcion || 'Sin descripción'}</td></tr>
+      <tr><th>Cantidad</th><td>${item.cantidad}</td></tr>
+    `;
+
+        contenedor.appendChild(tabla);
+      });
+    }
+
+
+    cargarPedido();
+  </script>
+</body>
+
+</html>

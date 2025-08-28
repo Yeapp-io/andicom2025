@@ -1,0 +1,298 @@
+:root {
+    --magenta: #d81b60;
+    --negro: #0b0b0b;
+    --dorado: #d4af37;
+    --blanco: #ffffff;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    color: var(--blanco);
+}
+
+.bg-transition {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    transition: opacity 0.6s, background 0.6s;
+    opacity: 1;
+    background: #000;
+}
+
+body.bg-home .bg-transition {
+    background-image: url(../img/banner.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 1;
+}
+
+body.bg-menu .bg-transition {
+    background: linear-gradient(to bottom, #000000, #1a1a1a);
+    opacity: 1;
+}
+
+body.bg-pedido .bg-transition {
+    background: linear-gradient(to bottom, #1a1a1a, #000000);
+    opacity: 1;
+}
+
+/* Contenedor del menú */
+.container-nav {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.nav-custom {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    background: #d4af37;
+    padding: 8px;
+    border-radius: 40px;
+    width: 90%;
+}
+
+/* Botones de navegación */
+.nav-link {
+    flex: 1;
+    text-align: center;
+    padding: 12px 0;
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 4rem;
+}
+
+/* Estado activo */
+.nav-link.active {
+    background: white;
+    color: #d4af37;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Contenido de pestañas */
+.tab-content {
+    margin-top: 30px;
+    width: 90%;
+}
+
+.tab-pane {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.tab-content {
+    position: relative;
+    min-height: 350px;
+    /* Ajusta según tu contenido */
+    overflow: hidden;
+}
+
+.tab-pane.active {
+    display: block;
+    animation: slideIn 0.4s cubic-bezier(.77, 0, .18, 1) forwards;
+    z-index: 2;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.banner-inner {
+    background-color: rgba(0, 0, 0, 0.55);
+    /* negro con 55% opacidad */
+    border-radius: 18px;
+    padding: 2rem;
+}
+
+.banner-title {
+    color: var(--dorado);
+    font-size: 4rem;
+    letter-spacing: 0.5px;
+}
+
+.banner-desc {
+    font-size: 3rem;
+    margin: 0 1rem 2rem 1rem;
+}
+
+.btn {
+    letter-spacing: 0.2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    border: none;
+    border-radius: 12px;
+    padding: 2rem 3rem;
+    /* Ajusta el espacio interno */
+    font-weight: 900;
+    font-size: 2rem;
+    /* Tamaño de texto legible */
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease, background-color .3s ease;
+    box-shadow: 0 6px 20px rgba(212, 175, 55, .15);
+    width: auto;
+    /* Elimina cualquier ancho fijo */
+    min-width: 0;
+    /* Permite que el ancho sea solo el necesario */
+    margin: 1.5rem;
+}
+
+.btn-primary {
+    background: var(--dorado);
+    color: var(--blanco);
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 28px rgba(212, 175, 55, .22);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* ********** Segunda página ********** */
+
+.menu-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+    margin-top: 1.5rem;
+}
+
+.menu-container {
+    max-width: 900px;
+    width: 100%;
+    padding: 2rem;
+    text-align: center;
+}
+
+.menu-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--dorado);
+    border-radius: 12px;
+    padding: 1rem;
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    /* Distribuye el contenido */
+    min-height: 520px;
+    /* Ajusta según tu diseño */
+    box-sizing: border-box;
+}
+
+.menu-item img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.menu-item h3 {
+    margin: 0.5rem 0;
+    text-align: center;
+}
+
+.menu-item p {
+    flex: 1;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.menu-item:hover {
+    transform: scale(1.05);
+}
+
+.menu-item img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.menu-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn-qty {
+    background: var(--magenta);
+    color: var(--blanco);
+    border: none;
+    border-radius: 12px;
+    padding: 1rem 1rem;
+    font-size: 3rem;
+    cursor: pointer;
+    transition: background .2s;
+}
+
+.btn-qty:hover {
+    background: #e12c6f;
+}
+
+.qty-display {
+    font-size: 3rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+.btn-magenta {
+    background: var(--magenta);
+    color: var(--blanco);
+}
+
+.btn-magenta:hover {
+    filter: brightness(1.1);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--dorado);
+    border: 1px solid var(--dorado);
+    box-shadow: none;
+}
+
+.btn-ghost:hover {
+    background: color-mix(in srgb, var(--dorado) 15%, transparent);
+}

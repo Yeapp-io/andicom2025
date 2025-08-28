@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>App Cócteles</title>
+    <link rel="stylesheet" href="./css/gestion.css" />
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background: #f4f4f4;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-transition"></div>
+    <div class="container-nav">
+        <nav class="nav-custom">
+            <a class="nav-link active" data-tab="pedidos">Pedidos</a>
+            <a class="nav-link" data-tab="cocteles">Cócteles</a>
+            <a class="nav-link" data-tab="clientes">Clientes</a>
+        </nav>
+        <div class="tab-content">
+            <!-- Pedidos -->
+            <div class="tab-pane active" id="pedidos">
+                <section class="screen">
+                    <div class="banner-inner">
+                        <h1 class="banner-title">Gestión de pedidos</h1>
+                        <div id="tabla-pedidos"></div>
+                    </div>
+                </section>
+            </div>
+            <!-- Cocteles -->
+            <div class="tab-pane" id="cocteles">
+                <section class="screen">
+                    <div class="banner-inner">
+                        <h1 class="banner-title">Gestión de cócteles</h1>
+                        <div id="tabla-cocteles"></div>
+                    </div>
+                </section>
+            </div>
+            <!-- Clientes -->
+            <div class="tab-pane" id="clientes">
+                <section class="screen">
+                    <div class="banner-inner">
+                        <h1 class="banner-title">Gestión de clientes</h1>
+                        <div id="tabla-clientes"></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBXuxvb6yQgK9UYI7s9Ez89L2btjVypyQs",
+            authDomain: "app-cocteles-56536.firebaseapp.com",
+            projectId: "app-cocteles-56536",
+            storageBucket: "app-cocteles-56536.appspot.com",
+            messagingSenderId: "137807744816",
+            appId: "1:137807744816:web:61fcba05330f2a128d02f5",
+            measurementId: "G-ZSCCQ6919V"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Render Cocteles
+        async function renderCocteles() {
+            const querySnapshot = await getDocs(collection(db, "cocteles"));
+            let html = `<table>
+                    <tr>
+                      <th>ID</th><th>Nombre</th><th>Descripción</th><th>Disponibles</th><th>Estado</th>
+                    </tr>`;
+            querySnapshot.forEach(doc => {
+                const c = doc.data();
+                html += `<tr>
+                  <td>${c.id_coctel}</td>
+                  <td>${c.nombre}</td>
+                  <td>${c.descripcion}</td>
+                  <td>${c.disponibles}</td>
+                  <td>${c.estado}</td>
+                </tr>`;
+            });
+            html += "</table>";
+            document.getElementById("tabla-cocteles").innerHTML = html;
+        }
+
+        // Render Clientes
+        async function renderClientes() {
+            const querySnapshot = await getDocs(collection(db, "clientes"));
+            let html = `<table>
+                    <tr>
+                      <th>Nombre</th><th>Apellidos</th><th>Correo</th><th>Teléfono</th>
+                    </tr>`;
+            querySnapshot.forEach(doc => {
+                const c = doc.data();
+                html += `<tr>
+                  <td>${c.nombre}</td>
+                  <td>${c.apellidos}</td>
+                  <td>${c.correo}</td>
+                  <td>${c.telefono}</td>
+                </tr>`;
+            });
+            html += "</table>";
+            document.getElementById("tabla-clientes").innerHTML = html;
+        }
+
+        // Render Pedidos
+        async function renderPedidos() {
+            const querySnapshot = await getDocs(collection(db, "pedidos"));
+            let html = `<table>
+                    <tr>
+                      <th>Fecha</th><th>Estado</th><th>Detalle Cocteles</th>
+                    </tr>`;
+            querySnapshot.forEach(doc => {
+                const p = doc.data();
+                let detalle = "<ul>";
+                p.cocteles.forEach(c => {
+                    detalle += `<li>${c.nombre} - Cant: ${c.cantidad}</li>`;
+                });
+                detalle += "</ul>";
+                html += `<tr>
+                  <td>${p.fecha}</td>
+                  <td>${p.estado}</td>
+                  <td>${detalle}</td>
+                </tr>`;
+            });
+            html += "</table>";
+            document.getElementById("tabla-pedidos").innerHTML = html;
+        }
+
+        // Llamar todo
+        renderCocteles();
+        renderClientes();
+        renderPedidos();
+
+        // Navegación tabs
+        document.querySelectorAll('.nav-link').forEach(tab => {
+            tab.addEventListener('click', function (ev) {
+                ev.preventDefault();
+                document.querySelectorAll('.nav-link').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+                this.classList.add('active');
+                const paneId = this.getAttribute('data-tab');
+                const pane = document.getElementById(paneId);
+                if (pane) pane.classList.add('active');
+                document.body.className = 'bg-' + paneId;
+            });
+        });
+    </script>
+</body>
+
+</html>
