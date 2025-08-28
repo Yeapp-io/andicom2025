@@ -24,7 +24,7 @@ body {
 }
 
 body.bg-home .bg-transition {
-    background-image: url(../img/banner.jpg);
+    background-image: url(../img/Pantalla\ inicio_Mesa\ de\ trabajo\ 1.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -32,13 +32,17 @@ body.bg-home .bg-transition {
 }
 
 body.bg-menu .bg-transition {
-    background: linear-gradient(to bottom, #000000, #1a1a1a);
-    opacity: 1;
+    background-image: url(../img/FondoMenu.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 body.bg-pedido .bg-transition {
-    background: linear-gradient(to bottom, #1a1a1a, #000000);
-    opacity: 1;
+    background-image: url(../img/FondoMenu.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 /* Contenedor del menú */
@@ -56,10 +60,13 @@ body.bg-pedido .bg-transition {
     display: flex;
     justify-content: space-between;
     gap: 10px;
-    background: #d4af37;
+    background: transparent;
     padding: 8px;
     border-radius: 40px;
     width: 90%;
+    border: 5px solid var(--magenta);
+
+    margin-top: 50px;
 }
 
 /* Botones de navegación */
@@ -78,8 +85,8 @@ body.bg-pedido .bg-transition {
 
 /* Estado activo */
 .nav-link.active {
-    background: white;
-    color: #d4af37;
+    background: var(--magenta);
+    color: var(--blanco);
     font-weight: bold;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
@@ -142,9 +149,22 @@ body.bg-pedido .bg-transition {
 }
 
 .banner-title {
-    color: var(--dorado);
-    font-size: 4rem;
+    color: var(--blanco);
+    font-size: 6rem;
     letter-spacing: 0.5px;
+}
+
+.banner-title-menu {
+    font-size: 2.5rem;
+    letter-spacing: 0.5px;
+}
+
+#menu-section {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
 }
 
 .banner-desc {
@@ -207,7 +227,7 @@ body.bg-pedido .bg-transition {
 
 .menu-item {
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--dorado);
+    border: 1px solid var(--magenta);
     border-radius: 12px;
     padding: 1rem;
     transition: transform 0.3s;
@@ -238,9 +258,10 @@ body.bg-pedido .bg-transition {
     margin-bottom: 1rem;
 }
 
-.menu-item:hover {
-    transform: scale(1.05);
+/* .menu-item:hover {
+    transform: scale(1.05); 
 }
+    */
 
 .menu-item img {
     max-width: 100%;
@@ -253,7 +274,7 @@ body.bg-pedido .bg-transition {
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    margin-top: 1rem;
+    margin: 3rem;
 }
 
 .btn-qty {

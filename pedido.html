@@ -7,23 +7,12 @@
   <title>App Cócteles</title>
   <link rel="stylesheet" href="./css/pedido.css">
   <style>
-    /* table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
+    body {
+      background-image: url(../img/FondoMenu.jpg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
-
-    th,
-    td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: center;
-    }
-
-    th {
-      background: #f4f4f4;
-    } */
-
 
     .pedido-vertical {
       width: 100%;
@@ -125,23 +114,6 @@
       console.log("Esto es pedido :D ", pedido);
 
       renderPedido(pedido);
-
-      // pedidoBody.innerHTML = "";
-      // if (pedido.cocteles && Array.isArray(pedido.cocteles)) {
-      //   pedido.cocteles.forEach(coctel => {
-      //     const row = document.createElement("tr");
-      //     row.innerHTML = `
-      //       <td>
-      //         <img src="${coctel.imagen || './img/default.jpg'}" alt="${coctel.nombre}" style="width:80px; border-radius:8px;">
-      //       </td>
-      //       <td>${coctel.nombre}</td>
-      //       <td>${coctel.descripcion || 'Sin descripción'}</td>
-      //       <td>${coctel.cantidad}</td>
-      //     `;
-      //     pedidoBody.appendChild(row);
-      //   });
-      // }
-
       // 📲 Generar QR
       const qrContainer = document.getElementById("qr");
       qrContainer.innerHTML = "";

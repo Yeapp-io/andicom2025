@@ -2,41 +2,46 @@
     "cocteles": [
         {
             "id_coctel": 1,
-            "nombre": "MOJITO FRUTOS ROJOS – LEYARD PLANAR",
-            "descripcion": "6 cl de Ron Dos Maderas P.X. ½ lima (en dados). 2 g de azúcar moscovado. 1 mora. 1 frambuesa. ½ fresa 8 u 10 hojas de menta. Top de soda",
-            "imagen": "./img/perfect-serve-1024x1024.jpg",
+            "nombre": "MEZCALITA DE PIÑA",
+            "descripcion": "Una mezcla audaz y refinada: mezcal Contraluz con su carácter ahumado, jugo de limón fresco y un sirope de piña picante que equilibra dulzor y picante. Coronada con piña fresca, jalapeño y un delicado toque de sal de gusano rojo para una experiencia vibrante y sofisticada.",
+            "imagen": "./img/MEZCALITA DE PIÑA.jpg",
+            "aliado": "./img/TD SYNNEX-AWS.svg",
             "estado": "Activo",
             "disponibles": 10
         },
         {
             "id_coctel": 2,
-            "nombre": "MEZCALITA DE PIÑA– TD SYNNEX/ AWS",
-            "descripcion": "1 ½ oz. Mezcal. 1 oz. Jugo de limón. ½ oz. Miel de agave. Hielo. 1 rebanada de piña en almíbar. 1 Chile jalapeño. Hojas de menta. Sal de Gusano Rojo Delinsect.",
-            "imagen": "./img/perfect-serve-1024x1024.jpg",
+            "nombre": "MEZCAL SPRITZ",
+            "descripcion": "Un spritz con personalidad: mezcal Contraluz de notas ahumadas, Aperol equilibrado y vino espumoso Frizzantino Rosé que aporta frescura y burbujas finas. Realzado con naranjas rojas y un cordial de piel de pomelo que le da un bouquet cítrico y elegante.",
+            "imagen": "./img/MEZCAL SPRITZ.jpg",
+            "aliado": "./img/TREND-MICRO.svg",
             "estado": "Activo",
             "disponibles": 10
         },
         {
             "id_coctel": 3,
-            "nombre": "MEZCAL SPRITZ – TREND MICRO",
-            "descripcion": "2 oz de Mezcal. 1 oz de Aperol. ½ oz de Vino tinto. Vino espumoso. Hielo al gusto. Garnitura: 1 ramita de romero",
-            "imagen": "./img/perfect-serve-1024x1024.jpg",
+            "nombre": "CAIPIROSKA",
+            "descripcion": "Un clásico moderno con espíritu vibrante: vodka puro y equilibrado, limones frescos de pica y un toque justo de azúcar. Servido con hielo molido para resaltar su frescura y potenciar cada matiz cítrico.",
+            "imagen": "./img/CAIPIROSKA.png",
+            "aliado": "./img/SAMSUNG.svg",
             "estado": "Activo",
             "disponibles": 10
         },
         {
             "id_coctel": 4,
-            "nombre": "MINT JULEP – STELLAR CYBER",
-            "descripcion": "60 ml de Bourbon. 20 ml de jarabe de azúcar, o una cucharada de azúcar y 2 de agua. Hojas de menta o hierbabuena. Una ramita de menta o hierbabuena para adornar. Hielo Cocktail de Cubers.",
-            "imagen": "./img/perfect-serve-1024x1024.jpg",
+            "nombre": "MOJITO FRUTOS ROJOS",
+            "descripcion": "Un clásico reinventado con carácter premium: ron Dos Maderas P.X. que aporta notas profundas y aterciopeladas, combinado con la frescura de la menta y la viveza de los frutos rojos. La lima en dados y el azúcar moscovado equilibran dulzor y acidez, mientras la soda añade una efervescencia sutil que realza su textura.",
+            "imagen": "./img/MOJITO FRUTOS ROJOS.jpg",
+            "aliado": "./img/LEYARD-PLANAR.svg",
             "estado": "Activo",
             "disponibles": 10
         },
         {
             "id_coctel": 5,
-            "nombre": "CAIPIROSKA - SAMSUNG",
-            "descripcion": "3 limones de pica, cortadas en cuartos. 3 cucharadas de azúcar. 3/4 tazas de vodka. Hielo molido.",
-            "imagen": "./img/perfect-serve-1024x1024.jpg",
+            "nombre": "MINT JULEP",
+            "descripcion": "Un clásico del bourbon con un giro refinado: Bulleit Bourbon de carácter intenso, suavizado con sirope de azúcar y realzado por la frescura de la menta. Servido sobre hielo cocktail para una textura sedosa y un final elegante.",
+            "imagen": "./img/MINT JULEP.jpg",
+            "aliado": "./img/STELLAR CYBER.svg",
             "estado": "Activo",
             "disponibles": 10
         }

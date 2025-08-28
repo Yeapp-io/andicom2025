@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
+
 <body class="bg-home">
     <div class="bg-transition"></div>
     <div class="container-nav">
@@ -36,7 +38,7 @@
             <div class="tab-pane" id="menu">
                 <section id="menu-section" class="screen">
                     <div class="menu-container">
-                        <h1 class="banner-title">¡Nuestro menú!</h1>
+                        <h1 class="banner-title">¡Elije tu cóctel! </h1>
                         <div class="menu-grid"></div>
                     </div>
                 </section>
@@ -49,7 +51,7 @@
                         <h1 id="pedido-title" class="banner-title">Resumen de tu pedido</h1>
                         <table id="pedido-table"
                             style="width:100%;font-size:2rem;border-collapse:collapse;margin:2rem 0;">
-                            <thead>
+                            <thead style="font-size: 4rem;">
                                 <tr style="background:var(--dorado);color:var(--negro);">
                                     <th style="padding:1rem;border-radius:8px 0 0 8px;">Imagen</th>
                                     <th style="padding:1rem;">Cóctel</th>
@@ -58,12 +60,14 @@
                             </thead>
                             <tbody></tbody>
                         </table>
-                        <div id="pedido-vacio" style="opacity:.7;display:none;font-size:2.5rem;">
+                        <div id="pedido-vacio" style="font-size:3rem; margin: 3rem;">
                             No hay productos en tu pedido 🍸
                         </div>
-                        <button id="btn-generar-pedido" class="btn btn-magenta" style="margin-bottom:2rem;">
-                            Generar pedido
-                        </button>
+                        <div>
+                            <button id="btn-generar-pedido" class="btn btn-magenta" style="margin-bottom:2rem;">
+                                Generar pedido
+                            </button>
+                        </div>
                         <canvas id="qrcode"></canvas>
                     </div>
                 </section>
@@ -77,8 +81,9 @@
         if (typeof renderCocteles === 'function') {
             await renderCocteles();
         }
-        
+
         initAppLogic();
     </script>
 </body>
+
 </html>

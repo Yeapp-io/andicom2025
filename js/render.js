@@ -27,9 +27,10 @@ export async function renderCocteles() {
         const id = doc.id;
         item.setAttribute('data-id', id);
         item.innerHTML = `
+      <h3 class="menu-name banner-title-menu" style="margin: 2rem 0;">${coctel.nombre}</h3>
+      <img style="height: 100px;" src="${coctel.aliado || './img/default.jpg'}" alt="${coctel.nombre}">
       <img src="${coctel.imagen || './img/default.jpg'}" alt="${coctel.nombre}">
-      <h3 class="menu-name">${coctel.nombre}</h3>
-      <p  class="menu-descripcion" style="font-size: 2rem;">${coctel.descripcion || ''}</p>
+      <p  class="menu-descripcion" style="font-size: 2rem; margin: 0 0.5rem;">${coctel.descripcion || ''}</p>
       <div class="menu-actions">
         <button class="btn-qty" data-action="minus">−</button>
         <span class="qty-display">0</span>
