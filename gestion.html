@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍹</text></svg>">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍹</text></svg>">
     <title>App Cócteles</title>
     <link rel="stylesheet" href="./css/gestion.css" />
     <style>
@@ -19,10 +20,6 @@
             padding: 10px;
             border: 1px solid #ccc;
             text-align: left;
-        }
-
-        th {
-            background: #f4f4f4;
         }
     </style>
 </head>
@@ -69,7 +66,7 @@
     <!-- Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBXuxvb6yQgK9UYI7s9Ez89L2btjVypyQs",
@@ -85,25 +82,69 @@
         const db = getFirestore(app);
 
         // Render Cocteles
+        // Render Cocteles con edición
         async function renderCocteles() {
             const querySnapshot = await getDocs(collection(db, "cocteles"));
             let html = `<table>
-                    <tr>
-                      <th>ID</th><th>Nombre</th><th>Descripción</th><th>Disponibles</th><th>Estado</th>
-                    </tr>`;
-            querySnapshot.forEach(doc => {
-                const c = doc.data();
+            <tr>
+              <th>ID</th><th>Nombre</th><th>Descripción</th><th>Disponibles</th><th>Estado</th>
+            </tr>`;
+            querySnapshot.forEach(docSnap => {
+                const c = docSnap.data();
                 html += `<tr>
-                  <td>${c.id_coctel}</td>
-                  <td>${c.nombre}</td>
-                  <td>${c.descripcion}</td>
-                  <td>${c.disponibles}</td>
-                  <td>${c.estado}</td>
-                </tr>`;
+          <td>${c.id_coctel}</td>
+          <td>${c.nombre}</td>
+          <td>${c.descripcion}</td>
+          <td>
+            <input type="number" class="disponibles-input" data-id="${docSnap.id}" value="${c.disponibles}" min="0" style="width:70px" />
+            <button class="guardar-cantidad" data-id="${docSnap.id}">Guardar</button>
+          </td>
+          <td>
+            <select class="estado-coctel" data-id="${docSnap.id}">
+              <option value="Activo" ${c.estado === "Activo" ? "selected" : ""}>Activo</option>
+              <option value="Inactivo" ${c.estado === "Inactivo" ? "selected" : ""}>Inactivo</option>
+              <option value="Agotado" ${c.estado === "Agotado" ? "selected" : ""}>Agotado</option>
+            </select>
+          </td>
+        </tr>`;
             });
             html += "</table>";
             document.getElementById("tabla-cocteles").innerHTML = html;
+
+            // Guardar cantidad disponibles
+            document.querySelectorAll(".guardar-cantidad").forEach(btn => {
+                btn.addEventListener("click", async (e) => {
+                    const id = e.target.getAttribute("data-id");
+                    const input = document.querySelector(`.disponibles-input[data-id="${id}"]`);
+                    const nuevaCantidad = parseInt(input.value);
+
+                    try {
+                        const coctelRef = doc(db, "cocteles", id);
+                        await updateDoc(coctelRef, { disponibles: nuevaCantidad });
+                        console.log(`✅ Cantidad actualizada a ${nuevaCantidad} para cóctel ${id}`);
+                    } catch (error) {
+                        console.error("❌ Error al actualizar cantidad:", error);
+                    }
+                });
+            });
+
+            // Actualizar estado
+            document.querySelectorAll(".estado-coctel").forEach(select => {
+                select.addEventListener("change", async (e) => {
+                    const id = e.target.getAttribute("data-id");
+                    const nuevoEstado = e.target.value;
+
+                    try {
+                        const coctelRef = doc(db, "cocteles", id);
+                        await updateDoc(coctelRef, { estado: nuevoEstado });
+                        console.log(`✅ Estado actualizado a "${nuevoEstado}" para cóctel ${id}`);
+                    } catch (error) {
+                        console.error("❌ Error al actualizar estado:", error);
+                    }
+                });
+            });
         }
+
 
         // Render Clientes
         async function renderClientes() {
@@ -126,12 +167,15 @@
         }
 
         // Render Pedidos
+        // --- Render Pedidos con control de estado ---
+        // Render Pedidos
+        // Render Pedidos
         async function renderPedidos() {
             const querySnapshot = await getDocs(collection(db, "pedidos"));
             let html = `<table>
-                    <tr>
-                      <th>Fecha</th><th>Estado</th><th>Detalle Cocteles</th>
-                    </tr>`;
+            <tr>
+              <th>Turno</th><th>Fecha</th><th>Estado</th><th>Detalle Cócteles</th>
+            </tr>`;
             querySnapshot.forEach(doc => {
                 const p = doc.data();
                 let detalle = "<ul>";
@@ -139,14 +183,39 @@
                     detalle += `<li>${c.nombre} - Cant: ${c.cantidad}</li>`;
                 });
                 detalle += "</ul>";
+
+                // 🔹 Guardamos el ID del documento en data-id
                 html += `<tr>
-                  <td>${p.fecha}</td>
-                  <td>${p.estado}</td>
-                  <td>${detalle}</td>
-                </tr>`;
+          <td>${p.turno}</td>
+          <td>${p.fecha}</td>
+          <td>
+            <select class="estado-select" data-id="${doc.id}">
+              <option value="Pendiente" ${p.estado === "Pendiente" ? "selected" : ""}>Pendiente</option>
+              <option value="En proceso" ${p.estado === "En proceso" ? "selected" : ""}>En proceso</option>
+              <option value="Entregado" ${p.estado === "Entregado" ? "selected" : ""}>Entregado</option>
+            </select>
+          </td>
+          <td>${detalle}</td>
+        </tr>`;
             });
             html += "</table>";
             document.getElementById("tabla-pedidos").innerHTML = html;
+
+            // 🔹 Ahora sí usamos el id desde data-id
+            document.querySelectorAll(".estado-select").forEach(select => {
+                select.addEventListener("change", async (e) => {
+                    const pedidoId = e.target.getAttribute("data-id"); // obtenemos id del pedido
+                    const nuevoEstado = e.target.value;
+
+                    try {
+                        const pedidoRef = doc(db, "pedidos", pedidoId);
+                        await updateDoc(pedidoRef, { estado: nuevoEstado });
+                        console.log(`Estado actualizado a ${nuevoEstado} para pedido ${pedidoId}`);
+                    } catch (error) {
+                        console.error("Error al actualizar estado:", error);
+                    }
+                });
+            });
         }
 
         // Llamar todo
