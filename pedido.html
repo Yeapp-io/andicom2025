@@ -8,12 +8,6 @@
   <title>App Cócteles</title>
   <link rel="stylesheet" href="./css/pedido.css">
   <style>
-    body {
-      background-image: url(../img/FondoMenu.jpg);
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
 
     .pedido-vertical {
       width: 100%;
@@ -162,7 +156,6 @@
         tabla.innerHTML = `
       <tr><th>Imagen</th><td><img src="${item.imagen || './img/default.jpg'}" alt="${item.nombre}" width="100"></td></tr>
       <tr><th>Nombre</th><td>${item.nombre}</td></tr>
-      <tr><th>Descripción</th><td>${item.descripcion || 'Sin descripción'}</td></tr>
       <tr><th>Cantidad</th><td>${item.cantidad}</td></tr>
     `;
 
