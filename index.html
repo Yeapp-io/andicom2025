@@ -4,25 +4,23 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍹</text></svg>">
     <title>App Cócteles</title>
     <link rel="stylesheet" href="./css/styles.css" />
-    <!-- Librerías externas -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
 
 <body class="bg-home">
     <div class="bg-transition"></div>
     <div class="container-nav">
         <nav class="nav-custom">
-            <a class="nav-link active" data-tab="home">Inicio</a>
-            <a class="nav-link" data-tab="menu">Menú</a>
-            <a class="nav-link" data-tab="pedido">Pedido</a>
+            <a class="nav-link active" data-tab="home"> 🎉 Inicio</a>
+            <a class="nav-link" data-tab="menu">🍸 Menú</a>
+            <a class="nav-link" data-tab="pedido">🎫 Pedido</a>
         </nav>
         <div class="tab-content">
             <!-- Pantalla 1 -->
             <div class="tab-pane active" id="home">
-                <section id="banner" class="screen">
+                <section id="banner" class="screen flex-column-center">
                     <div class="banner-inner">
                         <h1 id="banner-title" class="banner-title">¡Anímate a explorar nuestra selección exclusiva de
                             cócteles!</h1>
@@ -41,7 +39,7 @@
             </div>
             <!-- Pantalla 2 -->
             <div class="tab-pane" id="menu">
-                <section id="menu-section" class="screen">
+                <section id="menu-section" class="screen flex-column-center">
                     <div class="menu-container">
                         <h1 class="banner-title">¡Elije tu cóctel! </h1>
                         <div class="menu-grid"></div>
@@ -51,7 +49,7 @@
 
             <!-- Pantalla 3 -->
             <div class="tab-pane" id="pedido">
-                <section id="pedido" class="screen">
+                <section id="pedido" class="screen flex-column-center">
                     <div class="menu-container">
                         <h1 id="pedido-title" class="banner-title">Resumen de tu pedido</h1>
                         <table id="pedido-table"
@@ -73,12 +71,16 @@
                                 Generar pedido
                             </button>
                         </div>
-                        <canvas id="qrcode"></canvas>
                     </div>
                 </section>
             </div>
         </div>
     </div>
+    <!-- Botón fijo (fuera del flujo de las tab-panes) -->
+    <button id="btn-ir-pedido" class="btn btn-magenta btn-fixed" style="display:none;">
+        🍹
+        <span id="btn-pedido-cantidad" class="badge">0</span>
+    </button>
     <script type="module">
         import { renderCocteles } from "./js/render.js";
         import { initAppLogic } from "./js/main.js";

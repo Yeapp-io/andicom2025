@@ -8,7 +8,6 @@
 html,
 body {
     height: 100%;
-    background: linear-gradient(to bottom, #000000, #1a1a1a);
     opacity: 1;
     margin: 0;
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";

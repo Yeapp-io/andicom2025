@@ -69,23 +69,42 @@ export function initAppLogic() {
 
         function changeQty(id, delta) {
             const current = cart.get(id)?.cantidad || 0;
-            const next = Math.max(0, current + delta);
+            const desired = Math.max(0, current + delta); // cantidad que queremos tener
 
-            if (!cart.has(id)) {
-                const itemEl = document.querySelector(`.menu-item[data-id="${id}"]`);
-                if (!itemEl) return;
-                const data = getItemDataFromMenuEl(itemEl);
-                data.cantidad = next;
-                if (next > 0) cart.set(id, data);
-            } else {
-                const entry = cart.get(id);
-                entry.cantidad = next;
-                if (next === 0) cart.delete(id);
+            // Regla 1: no más de 2 por producto
+            if (desired > 2) {
+                alert("⚠️ Solo puedes pedir hasta 2 unidades de cada cóctel.");
+                return;
             }
 
+            // Regla 2: no más de 2 cócteles en total
+            // Calculamos el total después del cambio de manera robusta:
+            const totalActual = [...cart.values()].reduce((acc, c) => acc + c.cantidad, 0);
+            const totalDespues = totalActual - current + desired;
+            if (totalDespues > 2) {
+                alert("⚠️ Solo puedes pedir hasta 2 cócteles en total por pedido.");
+                return;
+            }
+
+            // Aplicar la actualización en el carrito (solo 1 vez)
+            if (desired === 0) {
+                cart.delete(id);
+            } else if (cart.has(id)) {
+                cart.get(id).cantidad = desired;
+            } else {
+                // tomamos datos desde el DOM si no existía el item
+                const itemEl = document.querySelector(`.menu-item[data-id="${id}"]`);
+                const data = itemEl ? getItemDataFromMenuEl(itemEl) : { id, nombre: '', imagen: '', descripcion: '' };
+                data.cantidad = desired;
+                cart.set(id, data);
+            }
+
+            // actualizar vistas
             syncMenuQtyDisplays();
             renderPedidoTable();
+            updateFixedButtonVisibility();
         }
+
 
         function syncMenuQtyDisplays() {
             document.querySelectorAll('.menu-item').forEach(el => {
@@ -123,6 +142,7 @@ export function initAppLogic() {
                 }
             }
             pedidoVacio.style.display = hasItems ? 'none' : 'block';
+            updateFixedButtonVisibility();
         }
 
         // Delegación: botones del menú (+ / −)
@@ -164,6 +184,51 @@ export function initAppLogic() {
             if (menuLink) menuLink.click();
         });
 
+        // Btn fijo para generar pedido
+        // --- Button fijo: mostrar solo cuando estemos en la pestaña 'menu'
+        const fixedBtn = document.getElementById('btn-ir-pedido');
+        const fixedBtnQty = document.getElementById('btn-pedido-cantidad');
+
+        function updateFixedButtonVisibility() {
+            if (!fixedBtn) return;
+
+            // calcular total de cócteles en el carrito
+            const totalItems = [...cart.values()].reduce((acc, item) => acc + item.cantidad, 0);
+
+            // actualizar siempre el número
+            if (fixedBtnQty) {
+                fixedBtnQty.textContent = totalItems;
+            }
+
+            const activeTab = document.querySelector('.nav-link.active')?.dataset.tab;
+            if (activeTab === 'menu' && totalItems > 0) {
+                fixedBtn.style.display = 'flex';  // se muestra el botón fijo
+            } else {
+                fixedBtn.style.display = 'none';  // se oculta
+            }
+        }
+
+
+        // Llamar al inicio para tener el estado correcto al cargar
+        updateFixedButtonVisibility();
+
+        // Asegurar que cada cambio de pestaña actualice la visibilidad
+        //  justo después de activar la pane. Si prefieres no editarlo, añade otro listener:)
+        document.querySelectorAll('.nav-link').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // tiny defer para asegurar que la clase .active ya haya sido aplicada por el otro handler
+                setTimeout(updateFixedButtonVisibility, 0);
+            });
+        });
+
+        // Al hacer click en el botón fijo, vamos a la pestaña pedido
+        fixedBtn?.addEventListener('click', (e) => {
+            e.preventDefault();
+            const pedidoLink = document.querySelector('.nav-link[data-tab="pedido"]');
+            if (pedidoLink) pedidoLink.click();
+        });
+
+
         // Guardar pedido en Firestore
         async function guardarPedido(pedido) {
             const docRef = await addDoc(collection(db, "pedidos"), pedido);
@@ -184,7 +249,6 @@ export function initAppLogic() {
 
         function finalizarPedido(pedido) {
             const url = `${window.location.origin}${window.location.pathname}?id=${pedido.id_pedido}`;
-            QRCode.toCanvas(document.getElementById("qrcode"), url, { width: 300 });
         }
 
         document.getElementById('btn-generar-pedido').addEventListener('click', async () => {
@@ -228,24 +292,24 @@ export function initAppLogic() {
 
 
 async function generarTurno() {
-  // Colección "contadores", documento "general"
-  const turnoDoc = doc(db, "contadores", "general");
+    // Colección "contadores", documento "general"
+    const turnoDoc = doc(db, "contadores", "general");
 
-  const nuevoTurno = await runTransaction(db, async (transaction) => {
-    const docSnap = await transaction.get(turnoDoc);
+    const nuevoTurno = await runTransaction(db, async (transaction) => {
+        const docSnap = await transaction.get(turnoDoc);
 
-    if (!docSnap.exists()) {
-      // Si no existe el documento, lo creamos con turno = 1
-      transaction.set(turnoDoc, { turno: 1 });
-      return 1;
-    }
+        if (!docSnap.exists()) {
+            // Si no existe el documento, lo creamos con turno = 1
+            transaction.set(turnoDoc, { turno: 1 });
+            return 1;
+        }
 
-    const actual = docSnap.data().turno || 0;
-    const siguiente = actual + 1;
-    transaction.update(turnoDoc, { turno: siguiente });
-    return siguiente;
-  });
+        const actual = docSnap.data().turno || 0;
+        const siguiente = actual + 1;
+        transaction.update(turnoDoc, { turno: siguiente });
+        return siguiente;
+    });
 
-  // Dar formato tipo A001, A002, etc.
-  return `A${String(nuevoTurno).padStart(3, "0")}`;
+    // Dar formato tipo A001, A002, etc.
+    return `A${String(nuevoTurno).padStart(3, "0")}`;
 }
