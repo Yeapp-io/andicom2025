@@ -15,32 +15,40 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+
 export async function renderCocteles() {
     const menuGrid = document.querySelector('#menu .menu-grid');
     menuGrid.innerHTML = "";
 
     const snapshot = await getDocs(collection(db, "cocteles"));
-    snapshot.forEach(doc => {
-        const coctel = doc.data();
+
+    // Convertir snapshot a array con doc.id incluido
+    const cocteles = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }));
+
+    // Ordenar por id_coctel (asegúrate de que id_coctel exista y sea un número)
+    cocteles.sort((a, b) => a.id_coctel - b.id_coctel);
+
+    // Renderizar cada cóctel en el grid
+    cocteles.forEach(coctel => {
         const item = document.createElement('div');
         item.className = 'menu-item';
-        const id = doc.id;
-        item.setAttribute('data-id', id);
+        item.setAttribute('data-id', coctel.id);
+
         item.innerHTML = `
-      <h3 class="menu-name banner-title-menu" style="margin: 2rem 0;">${coctel.nombre}</h3>
-      <img style="height: 100px;" src="${coctel.aliado || './img/default.jpg'}" alt="${coctel.nombre}">
-      <img src="${coctel.imagen || './img/default.jpg'}" alt="${coctel.nombre}">
-      <p  class="menu-descripcion" style="font-size: 2rem; margin: 0 0.5rem;">${coctel.descripcion || ''}</p>
-      <div class="menu-actions">
-        <button class="btn-qty" data-action="minus">−</button>
-        <span class="qty-display">0</span>
-        <button class="btn-qty" data-action="plus">+</button>
-      </div>
-    `;
+            <h3 class="menu-name banner-title-menu" style="margin: 2rem 0;">${coctel.nombre}</h3>
+            <img class="img-aliado" style="height: 100px;" src="${coctel.aliado || './img/default.jpg'}" alt="${coctel.nombre}">
+            <img class="img-product" src="${coctel.imagen || './img/default.jpg'}" alt="${coctel.nombre}">
+            <p class="menu-descripcion" style="font-size: 2rem; margin: 0 0.5rem;">${coctel.descripcion || ''}</p>
+            <div class="menu-actions">
+                <button class="btn-qty" data-action="minus">−</button>
+                <span class="qty-display">0</span>
+                <button class="btn-qty" data-action="plus">+</button>
+            </div>
+        `;
+
         menuGrid.appendChild(item);
     });
 }
-
-// Auto-render al cargar
-// renderCocteles();
-

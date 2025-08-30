@@ -1,7 +1,7 @@
 // main.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
 import {
-    getFirestore, collection, addDoc, getDocs, setDoc, doc, updateDoc, increment, runTransaction
+    getFirestore, collection, addDoc, getDoc, getDocs, setDoc, doc, updateDoc, increment, runTransaction
 } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -61,9 +61,10 @@ export function initAppLogic() {
         function getItemDataFromMenuEl(itemEl) {
             return {
                 id: itemEl.dataset.id,
+                aliado: itemEl.querySelector('.img-aliado')?.getAttribute('src') || '',
                 nombre: itemEl.querySelector('.menu-name')?.textContent.trim() || '',
                 descripcion: itemEl.querySelector('.menu-descripcion')?.textContent.trim() || '',
-                imagen: itemEl.querySelector('img')?.getAttribute('src') || ''
+                imagen: itemEl.querySelector('.img-product')?.getAttribute('src') || ''
             };
         }
 
@@ -94,7 +95,7 @@ export function initAppLogic() {
             } else {
                 // tomamos datos desde el DOM si no existía el item
                 const itemEl = document.querySelector(`.menu-item[data-id="${id}"]`);
-                const data = itemEl ? getItemDataFromMenuEl(itemEl) : { id, nombre: '', imagen: '', descripcion: '' };
+                const data = itemEl ? getItemDataFromMenuEl(itemEl) : { id, nombre: '', aliado: '', imagen: '', descripcion: '' };
                 data.cantidad = desired;
                 cart.set(id, data);
             }
@@ -118,17 +119,22 @@ export function initAppLogic() {
         function renderPedidoTable() {
             pedidoTBody.innerHTML = '';
             let hasItems = false;
-
+            
             for (const [, item] of cart) {
-                const { id, nombre, descripcion, imagen, cantidad } = item;
+                const { id, nombre, aliado, imagen, descripcion, cantidad } = item;
                 if (cantidad > 0) {
                     hasItems = true;
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
             <td style="padding:1rem;border-bottom:1px solid #ccc;">
-              <img src="${imagen}" alt="${nombre}" style="width:64px;height:64px;border-radius:8px;">
+              <img width:"300px" src="${imagen}" alt="${nombre}" style="width:200px;height:200px;border-radius:8px;">
             </td>
-            <td style="padding:1rem;border-bottom:1px solid #ccc;">${nombre}</td>
+            
+            <td style="padding:1rem;border-bottom:1px solid #ccc;">
+                <p style="text-align: center;">${nombre}</p>
+                <img src="${aliado}" alt="${nombre}" style="width:200px;border-radius:8px;">
+              
+            </td>
             <td style="display:none; padding:1rem;border-bottom:1px solid #ccc;">${descripcion}</td>
             <td style="padding:1rem;text-align:center;border-bottom:1px solid #ccc;">
               <div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;">
@@ -231,13 +237,29 @@ export function initAppLogic() {
 
         // Guardar pedido en Firestore
         async function guardarPedido(pedido) {
-            const docRef = await addDoc(collection(db, "pedidos"), pedido);
-            console.log("✅ Pedido generado con ID:", docRef.id);
+            try {
+                // Verificar si hay suficiente stock para todos los cocteles en el pedido
+                const stockSuficiente = await verificarStock(pedido.cocteles);
+                if (!stockSuficiente) {
+                    alert("⚠️ No hay suficiente stock para algunos de los cócteles en tu pedido.");
+                    return; // No generar el pedido si no hay suficiente stock
+                }
 
-            // Guardar en localStorage
-            localStorage.setItem(docRef.id, JSON.stringify(pedido));
+                // Si el stock es suficiente, generar el pedido en Firestore
+                const docRef = await addDoc(collection(db, "pedidos"), pedido);
+                await descontarStock(pedido); // Descontar el stock
 
-            window.location.href = `./pedido.html?id=${docRef.id}`;
+                console.log("✅ Pedido generado con ID:", docRef.id);
+
+                // Guardar en localStorage
+                localStorage.setItem(docRef.id, JSON.stringify(pedido));
+
+                // redirigir a la página de pedido si es necesario
+                window.location.href = `./pedido.html?id=${docRef.id}`;
+
+            } catch (error) {
+                console.error("Error al guardar el pedido:", error);
+            }
 
         }
 
@@ -252,7 +274,7 @@ export function initAppLogic() {
         }
 
         document.getElementById('btn-generar-pedido').addEventListener('click', async () => {
-            const cocteles = Array.from(cart.values()).map(({ id, nombre, cantidad, imagen, descripcion }) => ({ id, nombre, cantidad, imagen, descripcion }));
+            const cocteles = Array.from(cart.values()).map(({ id, nombre, aliado, imagen, descripcion, cantidad }) => ({ id, nombre, aliado, imagen, descripcion, cantidad }));
 
             if (cocteles.length === 0) {
                 alert("⚠️ Debes seleccionar al menos un cóctel 🍸");
@@ -261,24 +283,21 @@ export function initAppLogic() {
 
             const pedido = {
                 fecha: getFechaActual(),
-                estado: 'Pendiente',
+                // estado: 'Pendiente',
                 turno: await generarTurno(),
-                cocteles: Object.keys(cocteles).map(id => ({
-                    id: cocteles[id].id,
-                    nombre: cocteles[id].nombre,
-                    cantidad: cocteles[id].cantidad,
-                    imagen: cocteles[id].imagen,
-                    descripcion: cocteles[id].descripcion,
+                cocteles: Object.keys(cocteles).map(coctel => ({
+                    id: cocteles[coctel].id,
+                    nombre: cocteles[coctel].nombre,
+                    aliado: cocteles[coctel].aliado,
+                    imagen: cocteles[coctel].imagen,
+                    descripcion: cocteles[coctel].descripcion,
+                    cantidad: cocteles[coctel].cantidad,
                 })),
             };
+            console.log("Esto es pedido ** ", pedido);
 
             await guardarPedido(pedido);
             finalizarPedido(pedido);
-
-            // Ocultar botones + y -
-            document.querySelectorAll('.pedido-plus, .pedido-minus').forEach(b => b.style.display = 'none');
-
-            // alert('Pedido generado:\n' + JSON.stringify(pedido, null, 2));
         });
     } // end start()
 
@@ -287,6 +306,67 @@ export function initAppLogic() {
         document.addEventListener('DOMContentLoaded', start);
     } else {
         start();
+    }
+}
+
+// Función para verificar stock antes de generar un pedido
+async function verificarStock(cocteles) {
+    try {
+        // Verificar el stock de cada cóctel
+        for (const coctel of cocteles) {
+            const docRef = doc(db, "cocteles", coctel.id);
+            const docSnap = await getDoc(docRef);
+
+            if (!docSnap.exists()) {
+                console.error("❌ No se encontró el cóctel con ID:", coctel.id);
+                return false; // Si algún cóctel no existe, no continuar
+            }
+
+            const data = docSnap.data();
+            const stockDisponible = data.disponibles || 0;
+
+            if (stockDisponible < coctel.cantidad) {
+                console.log(`❌ No hay suficiente stock de ${coctel.nombre}. Solo hay ${stockDisponible} disponibles.`);
+                return false; // Si no hay suficiente stock, retorna false
+            }
+        }
+
+        return true; // Si todos los cócteles tienen suficiente stock
+    } catch (error) {
+        console.error("Error al verificar el stock:", error);
+        return false;
+    }
+}
+
+// Función para descontar stock después de generar un pedido
+async function descontarStock(pedido) {
+    console.log("Esto llega a descontarStock/ pedido", pedido);
+
+    try {
+        for (const item of pedido.cocteles) {
+            const coctelRef = doc(db, "cocteles", item.id);
+            const coctelSnap = await getDoc(coctelRef);
+
+            if (coctelSnap.exists()) {
+                const coctelData = coctelSnap.data();
+                const stockActual = coctelData.disponibles ?? 0;
+
+                if (stockActual >= item.cantidad) {
+                    const nuevoStock = stockActual - item.cantidad;
+
+                    await updateDoc(coctelRef, {
+                        disponibles: nuevoStock
+                    });
+
+                    console.log(`✅ Stock actualizado: ${coctelData.nombre} ahora tiene ${nuevoStock} disponibles`);
+                } else {
+                    console.warn(`⚠️ No hay suficiente stock para ${coctelData.nombre}. Stock actual: ${stockActual}, Pedido: ${item.cantidad}`);
+                    alert(`⚠️ No hay suficiente stock para ${coctelData.nombre}. Stock actual: ${stockActual}, Pedido: ${item.cantidad}`)
+                }
+            }
+        }
+    } catch (error) {
+        console.error("❌ Error al descontar stock:", error);
     }
 }
 

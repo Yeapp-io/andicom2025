@@ -4,31 +4,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍹</text></svg>">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍹</text></svg>">
   <title>App Cócteles</title>
   <link rel="stylesheet" href="./css/pedido.css">
   <style>
-
     .pedido-vertical {
       width: 100%;
-      border-collapse: collapse;
-      margin: 20px auto;
       background-color: transparent;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      overflow: hidden;
+      border-bottom: 1px solid #ccc;
     }
 
     .pedido-vertical th {
       text-align: left;
       padding: 10px;
-      background: #d4af37;
       width: 120px;
+      font-size: 3rem;
     }
 
     .pedido-vertical td {
       padding: 10px;
-      background-color: transparent;
+      font-size: 3rem;
     }
 
     .pedido-vertical img {
@@ -38,21 +34,31 @@
 </head>
 
 <body>
-  <h1 class="banner-title" style="margin: 5rem 0;">Revisa la información de tu pedido aquí</h1>
+  <h1 class="banner-title" style="margin: 5rem 3rem;">Revisa la información de tu pedido aquí</h1>
   <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
     <canvas id="qr"></canvas>
 
   </div>
-
+  <div style="margin: 4rem;">
+    <h4 class="banner-desc">¡Tu pedido está casi listo! ⏳</h4>
+    <h4 class="banner-desc">Acércate a la barra con tu QR o número de turno para recogerlo</h4>
+  </div>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <div style="margin: 2rem;" id="pedido-detalle">
 
     </div>
   </div>
-  <div>
+  <h4 style="margin: 3rem;" class="banner-desc">Queremos conocerte un poco más <br> Déjanos sorprenderte 🎉</h4>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <button style="font-size:2.5rem;" onclick="window.location.href='registro.html'" class="btn btn-primary"
+      style="margin: 2rem 0; font-size:2rem;">
+      Registar mis datos
+    </button>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center;">
     <button style="font-size:2.5rem;" onclick="window.location.href='index.html'" class="btn btn-primary"
       style="margin: 2rem 0; font-size:2rem;">
-      Volver al inicio
+      Finalizar
     </button>
   </div>
 
@@ -127,17 +133,17 @@
       wrapper.style.flexDirection = "column";
       wrapper.style.alignItems = "center";
 
+      // Turno
+      const turno = document.createElement("h4");
+      turno.classList.add("banner-desc");
+      turno.textContent = `Turno: ${pedido.turno}`;
+      wrapper.appendChild(turno);
+
       // Fecha
       const fecha = document.createElement("h4");
       fecha.classList.add("banner-desc");
       fecha.textContent = `Fecha: ${pedido.fecha}`;
       wrapper.appendChild(fecha);
-
-      // Estado
-      const estado = document.createElement("h4");
-      estado.classList.add("banner-desc");
-      estado.textContent = `Turno: ${pedido.turno}`;
-      wrapper.appendChild(estado);
 
       // Título
       const titulo = document.createElement("h2");
@@ -154,9 +160,20 @@
         tabla.classList.add("pedido-vertical");
 
         tabla.innerHTML = `
-      <tr><th>Imagen</th><td><img src="${item.imagen || './img/default.jpg'}" alt="${item.nombre}" width="100"></td></tr>
-      <tr><th>Nombre</th><td>${item.nombre}</td></tr>
-      <tr><th>Cantidad</th><td>${item.cantidad}</td></tr>
+      <tr>
+        <th>Nombre:</th>
+        <td>
+        <p style="margin: 0;">${item.nombre}</p>
+        <img src="${item.aliado}" alt="${item.nombre}" style="width:200px;border-radius:8px;">
+        </td>
+      </tr>
+      <tr>
+        <th>Cóctel:</th>
+        <td><img src="${item.imagen || './img/default.jpg'}" alt="${item.nombre}" width="100"></td>
+      </tr>
+      <tr>
+        <th>Cantidad:</th><td><b>${item.cantidad}</b></td>
+      </tr>
     `;
 
         detalle.appendChild(tabla);

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍹</text></svg>">
+    <title>Registro de Usuario</title>
+    <style>
+        /* Asegúrate de que este CSS esté integrado con tu archivo actual para mantener consistencia */
+        body {
+            height: 100vh;
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: var(--blanco);
+            background-image: url(../img/FondoMenu.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+
+            display: flex;
+            /* Usamos Flexbox para centrar verticalmente */
+            flex-direction: column;
+            justify-content: center;
+            /* Centra verticalmente */
+            align-items: center;
+            /* Alinea horizontalmente */
+        }
+
+        .container {
+            width: 100%;
+            /* El contenedor ocupa todo el ancho */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            max-width: 600px;
+            /* Máximo ancho para pantallas grandes */
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1.4rem;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            margin-top: 5px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 3rem 1rem;
+            background: var(--magenta);
+            color: var(--blanco);
+            font-size: 2.5rem;
+        }
+
+        input[type="submit"]:hover {
+            background: var(--magenta);
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.5rem;
+        }
+
+        .back-link:hover {
+            background: var(--magenta);
+        }
+
+        @media (max-width: 767px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            input[type="submit"] {
+                font-size: 1.8rem;
+            }
+
+            .form-group label {
+                font-size: 1.1rem;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"] {
+                font-size: 1.1rem;
+                padding: 12px;
+            }
+
+            .back-link {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                padding: 40px;
+            }
+
+            h1 {
+                font-size: 3rem;
+            }
+
+            input[type="submit"] {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Registro de Usuario</h1>
+        <form id="registro-form">
+            <div class="form-group">
+                <label for="nombre">Nombre Completo</label>
+                <input type="text" id="nombre" name="nombre" required placeholder="Ingrese su nombre completo" />
+            </div>
+
+            <div class="form-group">
+                <label for="telefono">Teléfono</label>
+                <input type="tel" id="telefono" name="telefono" required placeholder="Ingrese su teléfono" />
+            </div>
+
+            <div class="form-group">
+                <label for="correo">Correo Electrónico</label>
+                <input type="email" id="correo" name="correo" required placeholder="Ingrese su correo electrónico" />
+            </div>
+
+            <div class="form-group">
+                <label for="empresa">Empresa</label>
+                <input type="text" id="empresa" name="empresa" required placeholder="Ingrese el nombre de su empresa" />
+            </div>
+
+            <input type="submit" value="Registrar" />
+        </form>
+
+        <!-- Enlace para volver atrás -->
+        <a href="javascript:void(0);" class="back-link" onclick="window.history.back();">Volver</a>
+
+    </div>
+
+    <!-- Importamos Firebase y tu JS -->
+    <script type="module" src="./js/registro.js"></script>
+</body>
+
+</html>

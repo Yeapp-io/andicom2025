@@ -4,19 +4,19 @@
             "id_coctel": 1,
             "nombre": "MEZCALITA DE PIÑA",
             "descripcion": "Una mezcla audaz y refinada: mezcal Contraluz con su carácter ahumado, jugo de limón fresco y un sirope de piña picante que equilibra dulzor y picante. Coronada con piña fresca, jalapeño y un delicado toque de sal de gusano rojo para una experiencia vibrante y sofisticada.",
-            "imagen": "./img/MEZCALITA DE PIÑA.jpg",
+            "imagen": "./img/MEZCALITA DE PIÑA.png",
             "aliado": "./img/TD SYNNEX-AWS.svg",
             "estado": "Activo",
-            "disponibles": 10
+            "disponibles": 20
         },
         {
             "id_coctel": 2,
             "nombre": "MEZCAL SPRITZ",
             "descripcion": "Un spritz con personalidad: mezcal Contraluz de notas ahumadas, Aperol equilibrado y vino espumoso Frizzantino Rosé que aporta frescura y burbujas finas. Realzado con naranjas rojas y un cordial de piel de pomelo que le da un bouquet cítrico y elegante.",
-            "imagen": "./img/MEZCAL SPRITZ.jpg",
+            "imagen": "./img/MEZCAL SPRITZ.png",
             "aliado": "./img/TREND-MICRO.svg",
             "estado": "Activo",
-            "disponibles": 10
+            "disponibles": 20
         },
         {
             "id_coctel": 3,
@@ -25,45 +25,46 @@
             "imagen": "./img/CAIPIROSKA.png",
             "aliado": "./img/SAMSUNG.svg",
             "estado": "Activo",
-            "disponibles": 10
+            "disponibles": 20
         },
         {
             "id_coctel": 4,
             "nombre": "MOJITO FRUTOS ROJOS",
             "descripcion": "Un clásico reinventado con carácter premium: ron Dos Maderas P.X. que aporta notas profundas y aterciopeladas, combinado con la frescura de la menta y la viveza de los frutos rojos. La lima en dados y el azúcar moscovado equilibran dulzor y acidez, mientras la soda añade una efervescencia sutil que realza su textura.",
-            "imagen": "./img/MOJITO FRUTOS ROJOS.jpg",
+            "imagen": "./img/MOJITO FRUTOS ROJOS.png",
             "aliado": "./img/LEYARD-PLANAR.svg",
             "estado": "Activo",
-            "disponibles": 10
+            "disponibles": 20
         },
         {
             "id_coctel": 5,
             "nombre": "MINT JULEP",
             "descripcion": "Un clásico del bourbon con un giro refinado: Bulleit Bourbon de carácter intenso, suavizado con sirope de azúcar y realzado por la frescura de la menta. Servido sobre hielo cocktail para una textura sedosa y un final elegante.",
-            "imagen": "./img/MINT JULEP.jpg",
+            "imagen": "./img/MINT JULEP.png",
             "aliado": "./img/STELLAR CYBER.svg",
             "estado": "Activo",
-            "disponibles": 10
+            "disponibles": 20
         }
     ],
     "pedidos": [
         {
             "fecha": "2025-08-27 23:51:09",
-            "estado": "Pruebas",
             "turno": "A000",
             "cocteles": [
                 {
-                    "id": "w5eghv1u3VsqbWvdZ9CH",
+                    "id": "Prueba",
                     "nombre": "MEZCAL SPRITZ – TREND MICRO",
                     "cantidad": 1,
                     "imagen": "./img/perfect-serve-1024x1024.jpg",
+                    "aliado": "./img/TREND-MICRO.svg",
                     "descripcion": "2 oz de Mezcal. 1 oz de Aperol. ½ oz de Vino tinto. Vino espumoso. Hielo al gusto. Garnitura: 1 ramita de romero"
                 },
                 {
-                    "id": "zZxK32lYrvE17kulA52u",
+                    "id": "Prueba",
                     "nombre": "CAIPIROSKA - SAMSUNG",
                     "cantidad": 2,
                     "imagen": "./img/perfect-serve-1024x1024.jpg",
+                    "aliado": "./img/SAMSUNG.svg",
                     "descripcion": "3 limones de pica, cortadas en cuartos. 3 cucharadas de azúcar. 3/4 tazas de vodka. Hielo molido."
                 }
             ]
@@ -72,7 +73,7 @@
     "clientes": [
         {
             "nombre": "Cristian",
-            "apellidos": "Pruebas",
+            "empresa": "Pruebas",
             "correo": "carevalo@example.com",
             "telefono": "3111111111"
         }

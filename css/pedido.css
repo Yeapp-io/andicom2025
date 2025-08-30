@@ -8,7 +8,6 @@
 html,
 body {
     height: 100%;
-    opacity: 1;
     margin: 0;
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
     color: var(--blanco);
@@ -16,14 +15,16 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-attachment: fixed;
 
 }
 
 .banner-title {
-    color: var(--dorado);
-    font-size: 3rem;
+    color: var(--blanco);
+    font-size: 4rem;
     letter-spacing: 0.5px;
     text-align: center;
+    margin: 4rem 2rem;
 }
 
 .banner-desc {
@@ -37,6 +38,7 @@ body {
 #qr {
     text-align: center;
     border: 20px solid var(--magenta);
+    margin: 2rem 5rem;
 }
 
 .btn {
@@ -63,8 +65,10 @@ body {
 }
 
 .btn-primary {
-    background: var(--dorado);
+    margin: 3rem 1rem;
+    background: var(--magenta);
     color: var(--blanco);
+    font-size: 3rem;
 }
 
 .btn-primary:hover {

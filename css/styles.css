@@ -28,7 +28,7 @@ body.bg-home .bg-transition {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: 1;
+    background-attachment: fixed;
 }
 
 body.bg-menu .bg-transition {
@@ -36,6 +36,7 @@ body.bg-menu .bg-transition {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 body.bg-pedido .bg-transition {
@@ -43,6 +44,7 @@ body.bg-pedido .bg-transition {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 /* Contenedor del menú */
@@ -299,6 +301,7 @@ body.bg-pedido .bg-transition {
     font-size: 3rem;
     text-align: center;
     font-weight: bold;
+    margin: 0 2rem;
 }
 
 .btn-magenta {
