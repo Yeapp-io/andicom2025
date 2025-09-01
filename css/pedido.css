@@ -79,3 +79,31 @@ body {
 .btn-primary:active {
     transform: translateY(0);
 }
+
+.pedido-horizontal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.pedido-img img {
+  max-width: 250px;
+  height: auto;
+}
+
+.pedido-info {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.pedido-cantidad {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  
+}

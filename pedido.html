@@ -6,8 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍹</text></svg>">
-  <script src="sweetalert2.min.js"></script>
+
   <link rel="stylesheet" href="sweetalert2.min.css">
+  <link rel="stylesheet" href="./css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <title>App Cócteles</title>
 
   <link rel="stylesheet" href="./css/pedido.css">
@@ -135,7 +137,14 @@
           // Guardar en localStorage para futuras cargas offline
           localStorage.setItem(pedidoId, JSON.stringify(pedido));
         } else {
-          alert("Pedido no encontrado");
+          //alert("Pedido no encontrado");
+          Swal.fire({
+            icon: 'error',
+            title: '❌ Pedido no encontrado',
+            text: 'No pudimos localizar el pedido con el ID ingresado. Verifica la información e inténtalo nuevamente.',
+            confirmButtonText: 'Entendido'
+          });
+
           return;
         }
       }
@@ -185,30 +194,26 @@
       detalle.id = "pedido-detalle-cocteles";
 
       pedido.cocteles.forEach(item => {
-        const tabla = document.createElement("table");
-        tabla.classList.add("pedido-vertical");
+        const card = document.createElement("div");
+        card.classList.add("pedido-horizontal");
 
-        tabla.innerHTML = `
-      <tr>
-        <th>Cóctel:</th>
-        <td><img src="${item.imagen || './img/default.jpg' }" alt="${item.nombre}" width="300"></td>
-      </tr>
-      <tr>
-        <th>Nombre:</th>
-        <td>
-        <p style="margin: 0;">${item.nombre}</p>
-        <img src="${item.aliado}" alt="${item.nombre}" style="width:200px;border-radius:8px;">
-        </td>
-      </tr>
-      <tr>
-        <th>Cantidad:</th><td><b>${item.cantidad}</b></td>
-      </tr>
+        card.innerHTML = `
+        <div class="pedido-img">
+            <img src="${item.imagen || './img/default.jpg'}" alt="${item.nombre}" width="350" style="border-radius:8px;">
+        </div>
+        <div class="pedido-info">
+            <p style="margin: 0; font-size: 1.5rem;"><b>${item.nombre}</b></p>
+            <img src="${item.aliado}" alt="${item.nombre}" style="width:150px; border-radius:8px; margin-bottom: 2rem;">
+            <p style="margin: 0; font-size: 1.3rem;">Cantidad<br><b>${item.cantidad}</b><br></p>
+        </div>
+        
     `;
 
-        detalle.appendChild(tabla);
+        detalle.appendChild(card);
       });
 
       wrapper.appendChild(detalle);
+
 
       // Render final en el contenedor
       contenedor.appendChild(wrapper);

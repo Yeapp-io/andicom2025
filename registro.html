@@ -99,8 +99,14 @@
             background: var(--magenta);
         }
 
+        input {
+            color: #fff;
+            /* texto escrito en blanco */
+        }
+
         input::placeholder {
-            color: var(--blanco);
+            color: rgba(255, 255, 255, 0.6);
+            /* placeholder en blanco tenue */
         }
 
         .back-link {
@@ -166,7 +172,7 @@
         <h1>Registro de Usuario</h1>
         <form id="registro-form">
             <div class="form-group">
-                <label for="nombre">Nombre Completo</label>
+                <label for="nombre">Nombre</label>
                 <input type="text" id="nombre" name="nombre" required placeholder="Ingrese su nombre completo" />
             </div>
 
@@ -176,7 +182,7 @@
             </div>
 
             <div class="form-group">
-                <label for="correo">Correo Electrónico</label>
+                <label for="correo">Correo</label>
                 <input type="email" id="correo" name="correo" required placeholder="Ingrese su correo electrónico" />
             </div>
 
@@ -193,7 +199,8 @@
 
     </div>
 
-    <p  style="display: flex; flex-direction: column; align-items: center; margin: 3rem 1rem;" id="timer">Redirigiendo en 90 segundos...</p>
+    <p style="display: flex; flex-direction: column; align-items: center; margin: 3rem 1rem;" id="timer">Redirigiendo en
+        90 segundos...</p>
 
     <script>
         let seconds = 90;
