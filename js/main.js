@@ -74,7 +74,13 @@ export function initAppLogic() {
 
             // Regla 1: no más de 2 por producto
             if (desired > 2) {
-                alert("⚠️ Solo puedes pedir hasta 2 unidades de cada cóctel.");
+                // alert("⚠️ Solo puedes pedir hasta 2 unidades de cada cóctel.");
+                Swal.fire({
+                    icon: 'warning',
+                    title: '⚠️ Límite alcanzado',
+                    text: 'Solo puedes pedir hasta 2 unidades de cada cóctel.',
+                    confirmButtonText: 'Entendido'
+                });
                 return;
             }
 
@@ -83,7 +89,13 @@ export function initAppLogic() {
             const totalActual = [...cart.values()].reduce((acc, c) => acc + c.cantidad, 0);
             const totalDespues = totalActual - current + desired;
             if (totalDespues > 2) {
-                alert("⚠️ Solo puedes pedir hasta 2 cócteles en total por pedido.");
+                // alert("⚠️ Solo puedes pedir hasta 2 cócteles en total por pedido.");
+                Swal.fire({
+                    icon: 'warning',
+                    title: '⚠️ Límite alcanzado',
+                    text: 'Solo puedes pedir hasta 2 unidades de cada cóctel.',
+                    confirmButtonText: 'Entendido'
+                });
                 return;
             }
 
@@ -119,7 +131,7 @@ export function initAppLogic() {
         function renderPedidoTable() {
             pedidoTBody.innerHTML = '';
             let hasItems = false;
-            
+
             for (const [, item] of cart) {
                 const { id, nombre, aliado, imagen, descripcion, cantidad } = item;
                 if (cantidad > 0) {
@@ -241,24 +253,46 @@ export function initAppLogic() {
                 // Verificar si hay suficiente stock para todos los cocteles en el pedido
                 const stockSuficiente = await verificarStock(pedido.cocteles);
                 if (!stockSuficiente) {
-                    alert("⚠️ No hay suficiente stock para algunos de los cócteles en tu pedido.");
-                    return; // No generar el pedido si no hay suficiente stock
+                    //alert("⚠️ No hay suficiente stock para algunos de los cócteles en tu pedido.");
+                    Swal.fire({
+                        icon: 'error',
+                        title: '🚫 Stock insuficiente',
+                        text: 'No hay suficiente stock para algunos de los cócteles en tu pedido.',
+                        confirmButtonText: 'Ok'
+                    });
+                    return;
                 }
 
                 // Si el stock es suficiente, generar el pedido en Firestore
                 const docRef = await addDoc(collection(db, "pedidos"), pedido);
                 await descontarStock(pedido); // Descontar el stock
-
+                // cerrar el "loading"
+                Swal.close();
                 console.log("✅ Pedido generado con ID:", docRef.id);
-
                 // Guardar en localStorage
                 localStorage.setItem(docRef.id, JSON.stringify(pedido));
+                // mostrar confirmación
+                Swal.fire({
+                    icon: 'success',
+                    title: '✅ Pedido generado',
+                    text: 'Tu pedido fue registrado con éxito. 🍸',
+                    timer: 3000,               // ⏳ se cierra solo en 3s
+                    timerProgressBar: true,    // barra de progreso visual
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.href = `./pedido.html?id=${docRef.id}`;
+                });
 
-                // redirigir a la página de pedido si es necesario
-                window.location.href = `./pedido.html?id=${docRef.id}`;
 
             } catch (error) {
                 console.error("Error al guardar el pedido:", error);
+                Swal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: '❌ Error',
+                    text: 'Hubo un problema al generar tu pedido. Intenta de nuevo.'
+                });
+
             }
 
         }
@@ -277,7 +311,13 @@ export function initAppLogic() {
             const cocteles = Array.from(cart.values()).map(({ id, nombre, aliado, imagen, descripcion, cantidad }) => ({ id, nombre, aliado, imagen, descripcion, cantidad }));
 
             if (cocteles.length === 0) {
-                alert("⚠️ Debes seleccionar al menos un cóctel 🍸");
+                //alert("⚠️ Debes seleccionar al menos un cóctel 🍸");
+                Swal.fire({
+                    icon: 'info',
+                    title: '🍸 Selección requerida',
+                    text: 'Debes seleccionar al menos un cóctel.',
+                    confirmButtonText: 'Entendido'
+                });
                 return;
             }
 
@@ -295,7 +335,16 @@ export function initAppLogic() {
                 })),
             };
             console.log("Esto es pedido ** ", pedido);
-
+            // Dentro de tu función guardarPedido o antes de llamarla
+            Swal.fire({
+                title: 'Procesando tu pedido 🍹',
+                text: 'Por favor espera un momento...',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading(); // 🔄 muestra spinner
+                }
+            });
             await guardarPedido(pedido);
             finalizarPedido(pedido);
         });
@@ -361,7 +410,15 @@ async function descontarStock(pedido) {
                     console.log(`✅ Stock actualizado: ${coctelData.nombre} ahora tiene ${nuevoStock} disponibles`);
                 } else {
                     console.warn(`⚠️ No hay suficiente stock para ${coctelData.nombre}. Stock actual: ${stockActual}, Pedido: ${item.cantidad}`);
-                    alert(`⚠️ No hay suficiente stock para ${coctelData.nombre}. Stock actual: ${stockActual}, Pedido: ${item.cantidad}`)
+                    //alert(`⚠️ No hay suficiente stock para ${coctelData.nombre}. Stock actual: ${stockActual}, Pedido: ${item.cantidad}`)
+                    Swal.fire({
+                        icon: 'error',
+                        title: `⚠️ Stock insuficiente`,
+                        html: `No hay suficiente stock para <b>${coctelData.nombre}</b>.<br>
+                                Stock actual: <b>${stockActual}</b><br>
+                                Pedido: <b>${item.cantidad}</b>`,
+                        confirmButtonText: 'Ok'
+                    });
                 }
             }
         }
