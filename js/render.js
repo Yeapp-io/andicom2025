@@ -28,7 +28,7 @@ export async function renderCocteles() {
         ...doc.data()
     }));
 
-    // Ordenar por id_coctel (asegúrate de que id_coctel exista y sea un número)
+    // Ordenar por id_coctel
     cocteles.sort((a, b) => a.id_coctel - b.id_coctel);
 
     // Renderizar cada cóctel en el grid
@@ -37,18 +37,26 @@ export async function renderCocteles() {
         item.className = 'menu-item';
         item.setAttribute('data-id', coctel.id);
 
+        // Si no hay stock, mostramos un mensaje
+        const actionsHTML = coctel.disponibles && coctel.disponibles > 0
+            ? `
+                <div class="menu-actions">
+                    <button class="btn-qty" data-action="minus">−</button>
+                    <span class="qty-display">0</span>
+                    <button class="btn-qty" data-action="plus">+</button>
+                </div>
+              `
+            : `<p class="sin-stock" style="color: red; font-weight: bold; font-size: 1.5rem; margin-top: 4rem;">Producto no disponible en este momento</p>`;
+
         item.innerHTML = `
             <h3 class="menu-name banner-title-menu" style="margin: 2rem 0;">${coctel.nombre}</h3>
             <img class="img-aliado" style="height: 100px;" src="${coctel.aliado || './img/default.jpg'}" alt="${coctel.nombre}">
             <img class="img-product" src="${coctel.imagen || './img/default.jpg'}" alt="${coctel.nombre}">
             <p class="menu-descripcion" style="font-size: 2rem; margin: 0 0.5rem;">${coctel.descripcion || ''}</p>
-            <div class="menu-actions">
-                <button class="btn-qty" data-action="minus">−</button>
-                <span class="qty-display">0</span>
-                <button class="btn-qty" data-action="plus">+</button>
-            </div>
+            ${actionsHTML}
         `;
 
         menuGrid.appendChild(item);
     });
 }
+

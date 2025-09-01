@@ -8,7 +8,14 @@
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍹</text></svg>">
     <title>Registro de Usuario</title>
     <style>
-        /* Asegúrate de que este CSS esté integrado con tu archivo actual para mantener consistencia */
+        :root {
+            --magenta: #d81b60;
+            --negro: #0b0b0b;
+            --dorado: #d4af37;
+            --blanco: #ffffff;
+        }
+
+        html,
         body {
             height: 100vh;
             margin: 0;
@@ -38,6 +45,14 @@
             margin-top: 30px;
             max-width: 600px;
             /* Máximo ancho para pantallas grandes */
+
+            display: flex;
+            /* Usamos Flexbox para centrar verticalmente */
+            flex-direction: column;
+            justify-content: center;
+            /* Centra verticalmente */
+            align-items: center;
+            /* Alinea horizontalmente */
         }
 
         h1 {
@@ -48,28 +63,29 @@
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin: 3rem;
         }
 
         label {
             font-size: 1.4rem;
-            color: #333;
+            color: var(--blanco);
         }
 
         input[type="text"],
         input[type="email"],
-        input[type="tel"] {
+        input[type="number"] {
             width: 100%;
             padding: 15px;
-            border: 1px solid #ccc;
+            border: 1px solid var(--blanco);
             border-radius: 8px;
+            background-color: transparent;
             font-size: 1.2rem;
             margin-top: 5px;
         }
 
         input[type="submit"] {
             width: 100%;
-            padding: 20px;
+            padding: 1rem;
             border: none;
             border-radius: 8px;
             cursor: pointer;
@@ -83,6 +99,10 @@
             background: var(--magenta);
         }
 
+        input::placeholder {
+            color: var(--blanco);
+        }
+
         .back-link {
             display: block;
             text-align: center;
@@ -90,10 +110,14 @@
             color: #fff;
             text-decoration: none;
             font-size: 1.5rem;
+            border: 1px solid var(--blanco);
+            border-radius: 14px;
+            padding: 1rem 6rem;
         }
 
         .back-link:hover {
-            background: var(--magenta);
+            color: var(--magenta);
+            border: 1px solid var(--magenta);
         }
 
         @media (max-width: 767px) {
@@ -111,7 +135,7 @@
 
             input[type="text"],
             input[type="email"],
-            input[type="tel"] {
+            input[type="number"] {
                 font-size: 1.1rem;
                 padding: 12px;
             }
@@ -148,7 +172,7 @@
 
             <div class="form-group">
                 <label for="telefono">Teléfono</label>
-                <input type="tel" id="telefono" name="telefono" required placeholder="Ingrese su teléfono" />
+                <input type="number" id="telefono" name="telefono" required placeholder="Ingrese su teléfono" />
             </div>
 
             <div class="form-group">
@@ -165,9 +189,26 @@
         </form>
 
         <!-- Enlace para volver atrás -->
-        <a href="javascript:void(0);" class="back-link" onclick="window.history.back();">Volver</a>
+        <a href="javascript:void(0);" class="back-link" onclick="window.history.back();"> &#8592; Volver</a>
 
     </div>
+
+    <p  style="display: flex; flex-direction: column; align-items: center; margin: 3rem 1rem;" id="timer">Redirigiendo en 90 segundos...</p>
+
+    <script>
+        let seconds = 90;
+        const timerElement = document.getElementById("timer");
+
+        const interval = setInterval(() => {
+            seconds--;
+            timerElement.textContent = `Redirigiendo en ${seconds} segundos...`;
+
+            if (seconds <= 0) {
+                clearInterval(interval);
+                window.location.href = "index.html";
+            }
+        }, 1000);
+    </script>
 
     <!-- Importamos Firebase y tu JS -->
     <script type="module" src="./js/registro.js"></script>

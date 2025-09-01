@@ -2,6 +2,13 @@
 import { db } from "./firebaseConfig.js";
 import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+// Apenas cargue la página empieza el temporizador
+window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+        window.location.href = "index.html"; // Redirección
+    }, 90 * 1000); // 90 segundos en milisegundos
+});
+
 const form = document.getElementById("registro-form");
 
 form.addEventListener("submit", async (e) => {

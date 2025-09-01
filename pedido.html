@@ -60,7 +60,26 @@
       style="margin: 2rem 0; font-size:2rem;">
       Finalizar
     </button>
+
+    <p style="display: flex; flex-direction: column; align-items: center; margin: 3rem 1rem;" id="timer">Redirigiendo en 90 segundos...</p>
+
   </div>
+
+  <script>
+    let seconds = 45;
+    const timerElement = document.getElementById("timer");
+
+    const interval = setInterval(() => {
+      seconds--;
+      timerElement.textContent = `Redirigiendo en ${seconds} segundos...`;
+
+      if (seconds <= 0) {
+        clearInterval(interval);
+        window.location.href = "index.html";
+      }
+    }, 1000);
+  </script>
+
 
 
 
@@ -69,6 +88,12 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
+    // Apenas cargue la página empieza el temporizador
+    window.addEventListener("DOMContentLoaded", () => {
+      setTimeout(() => {
+        window.location.href = "index.html"; // Redirección
+      }, 90 * 1000); // 90 segundos en milisegundos
+    });
     // 🔧 Config Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyBXuxvb6yQgK9UYI7s9Ez89L2btjVypyQs",
