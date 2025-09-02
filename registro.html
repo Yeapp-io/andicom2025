@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍹</text></svg>">
+    <link rel="stylesheet" href="sweetalert2.min.css">
+    <link rel="stylesheet" href="./css/styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Registro de Usuario</title>
     <style>
         :root {
@@ -173,22 +176,27 @@
         <form id="registro-form">
             <div class="form-group">
                 <label for="nombre">Nombre</label>
-                <input type="text" id="nombre" name="nombre" required placeholder="Ingrese su nombre completo" />
+                <input type="text" id="nombre" name="nombre" maxlength="50" required
+                    placeholder="Ingrese su nombre completo" />
             </div>
 
             <div class="form-group">
                 <label for="telefono">Teléfono</label>
-                <input type="number" id="telefono" name="telefono" required placeholder="Ingrese su teléfono" />
+                <input type="number" id="telefono" name="telefono" maxlength="15" required
+                    placeholder="Ingrese su teléfono" pattern="[0-9]{7,15}" />
+                <small>Debe contener entre 7 y 15 dígitos</small>
             </div>
 
             <div class="form-group">
                 <label for="correo">Correo</label>
-                <input type="email" id="correo" name="correo" required placeholder="Ingrese su correo electrónico" />
+                <input type="email" id="correo" name="correo" maxlength="50" required
+                    placeholder="Ingrese su correo electrónico" />
             </div>
 
             <div class="form-group">
                 <label for="empresa">Empresa</label>
-                <input type="text" id="empresa" name="empresa" required placeholder="Ingrese el nombre de su empresa" />
+                <input type="text" id="empresa" name="empresa" maxlength="50" required
+                    placeholder="Ingrese el nombre de su empresa" />
             </div>
 
             <input type="submit" value="Registrar" />
@@ -196,8 +204,11 @@
 
         <!-- Enlace para volver atrás -->
         <a href="javascript:void(0);" class="back-link" onclick="window.history.back();"> &#8592; Volver</a>
-
     </div>
+
+    
+
+
 
     <p style="display: flex; flex-direction: column; align-items: center; margin: 3rem 1rem;" id="timer">Redirigiendo en
         90 segundos...</p>

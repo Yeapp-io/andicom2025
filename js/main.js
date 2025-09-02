@@ -276,8 +276,8 @@ export function initAppLogic() {
                     icon: 'success',
                     title: '✅ Pedido generado',
                     text: 'Tu pedido fue registrado con éxito. 🍸',
-                    timer: 3000,               // ⏳ se cierra solo en 3s
-                    timerProgressBar: true,    // barra de progreso visual
+                    timer: 3000,               
+                    timerProgressBar: true,    
                     showConfirmButton: false
                 }).then(() => {
                     window.location.href = `./pedido.html?id=${docRef.id}`;

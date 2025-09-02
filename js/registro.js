@@ -16,19 +16,55 @@ form.addEventListener("submit", async (e) => {
 
     const datos = new FormData(form);
     const usuario = {
-        nombre: datos.get("nombre"),
-        telefono: datos.get("telefono"),
-        correo: datos.get("correo"),
-        empresa: datos.get("empresa"),
+        nombre: datos.get("nombre").trim(),
+        telefono: datos.get("telefono").trim(),
+        correo: datos.get("correo").trim(),
+        empresa: datos.get("empresa").trim(),
         fechaRegistro: serverTimestamp()
     };
 
+    // 🔹 Validaciones antes de guardar
+    if (usuario.nombre.length < 3) {
+        return Swal.fire("⚠️ Atención", "El nombre debe tener al menos 3 caracteres.", "warning");
+    }
+
+    if (!/^[0-9]{7,15}$/.test(usuario.telefono)) {
+        return Swal.fire("⚠️ Atención", "El teléfono debe tener entre 7 y 15 dígitos.", "warning");
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(usuario.correo)) {
+        return Swal.fire("⚠️ Atención", "El correo electrónico no es válido.", "warning");
+    }
+
+    if (usuario.empresa.length < 2) {
+        return Swal.fire("⚠️ Atención", "El nombre de la empresa es demasiado corto.", "warning");
+    }
+
     try {
         await addDoc(collection(db, "clientes"), usuario);
-        alert("✅ ¡Gracias por registrarte! Tu información fue guardada correctamente.");
+
+        Swal.fire({
+            icon: "success",
+            title: "¡Registro exitoso! 🎉",
+            text: "✅ Gracias por registrarte, hemos guardado tu información correctamente.",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        }).then(() => {
+            window.location.href = "./index.html";
+        });
+
         form.reset();
     } catch (error) {
         console.error("❌ Error al registrar cliente:", error);
-        alert("Hubo un error al registrar, intenta nuevamente.");
+
+        Swal.fire({
+            icon: "error",
+            title: "¡Ups! 😕",
+            text: "Hubo un error al registrar. Por favor, intenta nuevamente.",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
     }
 });
