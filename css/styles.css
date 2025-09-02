@@ -382,22 +382,6 @@ body.bg-pedido .bg-transition {
         min-height: 100vh;
     }
 
-    body.bg-menu .bg-transition {
-        background-image: url(../img/FondoInicio.jpg);
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-    }
-
-    body.bg-pedido .bg-transition {
-        background-image: url(../img/FondoInicio.jpg);
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-    }
-
     .nav-custom {
         flex-direction: column;
         width: 70%;
