@@ -323,7 +323,7 @@ export function initAppLogic() {
 
             const pedido = {
                 fecha: getFechaActual(),
-                // estado: 'Pendiente',
+                estado: 'Pendiente',
                 turno: await generarTurno(),
                 cocteles: Object.keys(cocteles).map(coctel => ({
                     id: cocteles[coctel].id,

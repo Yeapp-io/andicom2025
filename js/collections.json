@@ -50,6 +50,7 @@
         {
             "fecha": "2025-08-27 23:51:09",
             "turno": "A000",
+            "estado": "Pendiente",
             "cocteles": [
                 {
                     "id": "Prueba",
@@ -62,7 +63,7 @@
                 {
                     "id": "Prueba",
                     "nombre": "CAIPIROSKA - SAMSUNG",
-                    "cantidad": 2,
+                    "cantidad": 1,
                     "imagen": "./img/perfect-serve-1024x1024.jpg",
                     "aliado": "./img/SAMSUNG.svg",
                     "descripcion": "3 limones de pica, cortadas en cuartos. 3 cucharadas de azúcar. 3/4 tazas de vodka. Hielo molido."

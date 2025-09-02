@@ -8,6 +8,7 @@
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍹</text></svg>">
     <title>App Cócteles</title>
     <link rel="stylesheet" href="./css/gestion.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         table {
             width: 100%;
@@ -36,7 +37,7 @@
             <div class="tab-pane active" id="pedidos">
                 <section class="screen">
                     <div class="banner-inner">
-                        <h1 class="banner-title">Gestión de pedidos</h1>
+                        <h1 class="banner-title">Gestión de pedidos pendientes</h1>
                         <div id="tabla-pedidos"></div>
                     </div>
                 </section>
@@ -50,14 +51,14 @@
                     </div>
                 </section>
             </div>
-            
+
         </div>
     </div>
 
     <!-- Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, updateDoc, query, where  } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBXuxvb6yQgK9UYI7s9Ez89L2btjVypyQs",
@@ -131,48 +132,91 @@
 
         // Render Pedidos
         // --- Render Pedidos con control de estado ---
-        // Render Pedidos
-        // Render Pedidos
-        async function renderPedidos() {
-            const querySnapshot = await getDocs(collection(db, "pedidos"));
-            let html = `<table>
-            <tr>
-              <th>Turno</th><th>Fecha</th><th>Detalle Cócteles</th>
-            </tr>`;
-            querySnapshot.forEach(doc => {
-                const p = doc.data();
-                let detalle = "<ul>";
-                p.cocteles.forEach(c => {
-                    detalle += `<li>${c.nombre} - Cantidad: ${c.cantidad}</li>`;
-                });
-                detalle += "</ul>";
 
-                // 🔹 Guardamos el ID del documento en data-id
-                html += `<tr>
-          <td>${p.turno}</td>
-          <td>${p.fecha}</td>
-          <td>${detalle}</td>
+        // Render solo pedidos pendientes
+        async function renderPedidosPendientes() {
+            try {
+                // 🔹 Query para traer solo los que tengan estado = Pendiente
+                const q = query(collection(db, "pedidos"), where("estado", "==", "Pendiente"));
+                const querySnapshot = await getDocs(q);
+
+                let html = `<table>
+        <tr>
+          <th>Turno</th><th>Fecha</th><th>Detalle Cócteles</th><th>Estado</th>
         </tr>`;
-            });
-            html += "</table>";
-            document.getElementById("tabla-pedidos").innerHTML = html;
 
-            // 🔹 Ahora sí usamos el id desde data-id
-            document.querySelectorAll(".estado-select").forEach(select => {
-                select.addEventListener("change", async (e) => {
-                    const pedidoId = e.target.getAttribute("data-id"); // obtenemos id del pedido
-                    const nuevoEstado = e.target.value;
+                querySnapshot.forEach(docSnap => {
+                    const p = docSnap.data();
+                    let detalle = "<ul>";
+                    p.cocteles.forEach(c => {
+                        detalle += `<li>${c.nombre} - Cantidad: ${c.cantidad}</li>`;
+                    });
+                    detalle += "</ul>";
 
-                    try {
-                        const pedidoRef = doc(db, "pedidos", pedidoId);
-                        await updateDoc(pedidoRef, { estado: nuevoEstado });
-                        console.log(`Estado actualizado a ${nuevoEstado} para pedido ${pedidoId}`);
-                    } catch (error) {
-                        console.error("Error al actualizar estado:", error);
-                    }
+                    html += `<tr>
+              <td>${p.turno}</td>
+              <td>${p.fecha}</td>
+              <td>${detalle}</td>
+              <td>
+                <select class="estado-select" data-id="${docSnap.id}">
+                  <option value="Pendiente" ${p.estado === "Pendiente" ? "selected" : ""}>Pendiente</option>
+                  <option value="Entregado" ${p.estado === "Entregado" ? "selected" : ""}>Entregado</option>
+                </select>
+                <button class="guardar-estado btn btn-primary" 
+                        data-id="${docSnap.id}" 
+                        data-turno="${p.turno}">
+                  Guardar
+                </button>
+              </td>
+            </tr>`;
                 });
-            });
+
+                html += "</table>";
+                document.getElementById("tabla-pedidos").innerHTML = html;
+
+                // Guardar estado con SweetAlert
+                document.querySelectorAll(".guardar-estado").forEach(btn => {
+                    btn.addEventListener("click", async (e) => {
+                        const id = e.target.getAttribute("data-id");
+                        const turno = e.target.getAttribute("data-turno");
+                        const select = document.querySelector(`.estado-select[data-id="${id}"]`);
+                        const nuevoEstado = select.value;
+
+                        try {
+                            const pedidoRef = doc(db, "pedidos", id);
+                            await updateDoc(pedidoRef, { estado: nuevoEstado });
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Estado actualizado',
+                                text: `El pedido con turno "${turno}" ahora está en estado "${nuevoEstado}"`,
+                                timer: 2500,
+                                showConfirmButton: false,
+                                timerProgressBar: true
+                            });
+
+                            // 🔄 Recargar tabla para que desaparezca si ya no es "Pendiente"
+                            renderPedidosPendientes();
+
+                        } catch (error) {
+                            console.error("❌ Error al actualizar estado:", error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'No se pudo actualizar el estado. Intenta nuevamente.',
+                                confirmButtonText: 'Aceptar'
+                            });
+                        }
+                    });
+                });
+
+            } catch (error) {
+                console.error("❌ Error al leer pedidos:", error);
+            }
         }
+
+        // 🔹 Llamar la función cuando cargue la página
+        renderPedidosPendientes();
 
         // Llamar todo
         renderCocteles();
