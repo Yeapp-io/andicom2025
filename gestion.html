@@ -30,7 +30,6 @@
         <nav class="nav-custom">
             <a class="nav-link active" data-tab="pedidos">Pedidos</a>
             <a class="nav-link" data-tab="cocteles">Cócteles</a>
-            <a class="nav-link" data-tab="clientes">Clientes</a>
         </nav>
         <div class="tab-content">
             <!-- Pedidos -->
@@ -51,15 +50,7 @@
                     </div>
                 </section>
             </div>
-            <!-- Clientes -->
-            <div class="tab-pane" id="clientes">
-                <section class="screen">
-                    <div class="banner-inner">
-                        <h1 class="banner-title">Gestión de clientes</h1>
-                        <div id="tabla-clientes"></div>
-                    </div>
-                </section>
-            </div>
+            
         </div>
     </div>
 
@@ -138,27 +129,6 @@
             });
         }
 
-
-        // Render Clientes
-        async function renderClientes() {
-            const querySnapshot = await getDocs(collection(db, "clientes"));
-            let html = `<table>
-                    <tr>
-                      <th>Nombre</th><th>Empresa</th><th>Correo</th><th>Teléfono</th>
-                    </tr>`;
-            querySnapshot.forEach(doc => {
-                const c = doc.data();
-                html += `<tr>
-                  <td>${c.nombre}</td>
-                  <td>${c.empresa}</td>
-                  <td>${c.correo}</td>
-                  <td>${c.telefono}</td>
-                </tr>`;
-            });
-            html += "</table>";
-            document.getElementById("tabla-clientes").innerHTML = html;
-        }
-
         // Render Pedidos
         // --- Render Pedidos con control de estado ---
         // Render Pedidos
@@ -206,7 +176,6 @@
 
         // Llamar todo
         renderCocteles();
-        renderClientes();
         renderPedidos();
 
         // Navegación tabs

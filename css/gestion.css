@@ -36,10 +36,6 @@ body.bg-cocteles .bg-transition {
     opacity: 1;
 }
 
-body.bg-clientes .bg-transition {
-    background: linear-gradient(to bottom, #1a1a1a, #000000);
-    opacity: 1;
-}
 
 /* Contenedor del menú */
 .container-nav {
