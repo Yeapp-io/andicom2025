@@ -7,8 +7,6 @@
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍹</text></svg>">
     <title>App Cócteles</title>
-    <script src="sweetalert2.min.js"></script>
-    <link rel="stylesheet" href="sweetalert2.min.css">
     <link rel="stylesheet" href="./css/styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -56,25 +54,27 @@
                 <section id="pedido" class="screen flex-column-center">
                     <div class="menu-container">
                         <h1 id="pedido-title" class="banner-title">Resumen de tu pedido</h1>
-                        <table id="pedido-table"
-                            style="width:100%;font-size:2rem;border-collapse:collapse;margin:2rem 0;">
-                            <thead style="font-size: 4rem;">
-                                <tr style="background:transparent;color:var(--blanco);">
+                        <div class="table-responsive">
+                            <table id="pedido-table"
+                                style="width:100%;font-size:2rem;border-collapse:collapse;margin:2rem 0;">
+                                <thead style="font-size: 4rem;">
+                                    <tr style="background:transparent;color:var(--blanco);">
 
-                                    <th style="padding:1rem;">Cóctel</th>
-                                    <th style="padding:1rem;">Nombre</th>
-                                    <th style="padding:1rem;">Cantidad</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                        <div id="pedido-vacio" style="font-size:3rem; margin: 3rem;">
-                            No hay productos en tu pedido 🍸
-                        </div>
-                        <div>
-                            <button id="btn-generar-pedido" class="btn btn-primary" style="margin-bottom:2rem;">
-                                Generar pedido
-                            </button>
+                                        <th style="padding:1rem;">Cóctel</th>
+                                        <th style="padding:1rem;">Nombre</th>
+                                        <th style="padding:1rem;">Cantidad</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <div id="pedido-vacio" style="font-size:3rem; margin: 3rem;">
+                                No hay productos en tu pedido 🍸
+                            </div>
+                            <div>
+                                <button id="btn-generar-pedido" class="btn btn-primary" style="margin-bottom:2rem;">
+                                    Generar pedido
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </section>

@@ -81,29 +81,107 @@ body {
 }
 
 .pedido-horizontal {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 1rem;
-  margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
 }
 
 .pedido-img img {
-  max-width: 250px;
-  height: auto;
+    max-width: 250px;
+    height: auto;
 }
 
 .pedido-info {
-  flex-grow: 1;
-  text-align: center;
+    flex-grow: 1;
+    text-align: center;
 }
 
 .pedido-cantidad {
-  font-size: 1.2rem;
-  font-weight: bold;
-  text-align: center;
-  
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+
+}
+
+/* 📱 Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+    .banner-title {
+        font-size: 2rem;
+        margin: 1rem;
+    }
+
+    .banner-desc {
+        font-size: 1.6rem;
+        margin: 1rem;
+    }
+
+    #qr {
+        width: 90%;
+        margin: 1rem auto;
+        border: 10px solid var(--magenta);
+        width: 300%;
+    }
+
+    .btn {
+        padding: 1rem 2rem;
+        font-size: 1.6rem;
+        width: 90%;
+        /* Botón más cómodo en móvil */
+    }
+
+    .btn-primary {
+        font-size: 1.8rem;
+    }
+
+    /* 🃏 Pedido en columna en móviles */
+    .pedido-horizontal {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .pedido-img img {
+        max-width: 180px;
+        width: 100%;
+    }
+
+    .pedido-info {
+        font-size: 1.2rem;
+        margin-top: 1rem;
+    }
+
+    .pedido-info img {
+        width: 100px;
+        margin: 1rem 0;
+    }
+
+    .pedido-cantidad {
+        font-size: 1.4rem;
+    }
+}
+
+/* 📱 Muy pequeños (celulares < 480px) */
+@media (max-width: 480px) {
+    .banner-title {
+        font-size: 1.6rem;
+    }
+
+    .banner-desc {
+        font-size: 1.2rem;
+    }
+
+    .btn {
+        font-size: 1.4rem;
+        padding: 0.8rem 1.2rem;
+    }
+
+    .pedido-img img {
+        max-width: 140px;
+    }
 }

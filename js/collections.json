@@ -7,7 +7,7 @@
             "imagen": "./img/MEZCALITA DE PIÑA.png",
             "aliado": "./img/TD SYNNEX-AWS.svg",
             "estado": "Activo",
-            "disponibles": 20
+            "disponibles": 50
         },
         {
             "id_coctel": 2,
@@ -16,7 +16,7 @@
             "imagen": "./img/MEZCAL SPRITZ.png",
             "aliado": "./img/TREND-MICRO.svg",
             "estado": "Activo",
-            "disponibles": 20
+            "disponibles": 50
         },
         {
             "id_coctel": 3,
@@ -25,7 +25,7 @@
             "imagen": "./img/CAIPIROSKA.png",
             "aliado": "./img/SAMSUNG.svg",
             "estado": "Activo",
-            "disponibles": 20
+            "disponibles": 50
         },
         {
             "id_coctel": 4,
@@ -34,7 +34,7 @@
             "imagen": "./img/MOJITO FRUTOS ROJOS.png",
             "aliado": "./img/LEYARD-PLANAR.svg",
             "estado": "Activo",
-            "disponibles": 20
+            "disponibles": 50
         },
         {
             "id_coctel": 5,
@@ -43,7 +43,7 @@
             "imagen": "./img/MINT JULEP.png",
             "aliado": "./img/STELLAR CYBER.svg",
             "estado": "Activo",
-            "disponibles": 20
+            "disponibles": 50
         }
     ],
     "pedidos": [
