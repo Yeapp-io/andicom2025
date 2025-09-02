@@ -56,10 +56,11 @@ body.bg-clientes .bg-transition {
     display: flex;
     justify-content: space-between;
     gap: 10px;
-    background: #d4af37;
+    background: transparent;
     padding: 8px;
     border-radius: 40px;
     width: 90%;
+    border: 5px solid var(--magenta);
 }
 
 /* Botones de navegación */
@@ -78,8 +79,8 @@ body.bg-clientes .bg-transition {
 
 /* Estado activo */
 .nav-link.active {
-    background: white;
-    color: #d4af37;
+    background: var(--magenta);
+    color: var(--blanco);
     font-weight: bold;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
@@ -142,7 +143,7 @@ body.bg-clientes .bg-transition {
 }
 
 .banner-title {
-    color: var(--dorado);
+    color: var(--magenta);
     font-size: 4rem;
     letter-spacing: 0.5px;
 }
@@ -160,10 +161,10 @@ body.bg-clientes .bg-transition {
     gap: .5rem;
     border: none;
     border-radius: 12px;
-    padding: 2rem 3rem;
+    padding: 0.5rem;
     /* Ajusta el espacio interno */
     font-weight: 900;
-    font-size: 2rem;
+    font-size: 1rem;
     /* Tamaño de texto legible */
     cursor: pointer;
     transition: transform .15s ease, box-shadow .15s ease, background-color .3s ease;
@@ -172,18 +173,14 @@ body.bg-clientes .bg-transition {
     /* Elimina cualquier ancho fijo */
     min-width: 0;
     /* Permite que el ancho sea solo el necesario */
-    margin: 1.5rem;
+    margin: 0.5rem;
 }
 
 .btn-primary {
-    background: var(--dorado);
+    background: var(--magenta);
     color: var(--blanco);
 }
 
-.btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 10px 28px rgba(212, 175, 55, .22);
-}
 
 .btn-primary:active {
     transform: translateY(0);
@@ -296,4 +293,70 @@ body.bg-clientes .bg-transition {
 
 .btn-ghost:hover {
     background: color-mix(in srgb, var(--dorado) 15%, transparent);
+}
+
+/* 📱 Ajustes Responsive */
+@media (max-width: 1024px) {
+    .banner-title {
+        font-size: 3rem;
+    }
+    .btn {
+        padding: 1.5rem 2rem;
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-custom {
+        flex-direction: column;
+        gap: 8px;
+        border-radius: 20px;
+        padding: 6px;
+    }
+
+    .nav-link {
+        font-size: 2rem;
+        padding: 10px;
+    }
+
+    .banner-title {
+        font-size: 2.5rem;
+        text-align: center;
+    }
+
+    .banner-inner {
+        padding: 1.5rem;
+    }
+
+    table {
+        font-size: 0.9rem;
+        display: block;
+        overflow-x: auto; /* 🔹 Scroll horizontal si la tabla es muy ancha */
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-link {
+        font-size: 1.6rem;
+        padding: 8px;
+    }
+
+    .banner-title {
+        font-size: 2rem;
+    }
+
+    .btn {
+        font-size: 1.4rem;
+        padding: 1rem 1.5rem;
+        margin: 1rem 0.5rem;
+    }
+
+    .menu-grid {
+        grid-template-columns: 1fr; /* 🔹 Una sola columna en móviles */
+    }
+
+    .qty-display {
+        font-size: 2rem;
+    }
 }

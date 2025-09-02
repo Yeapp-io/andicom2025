@@ -87,7 +87,7 @@
             const querySnapshot = await getDocs(collection(db, "cocteles"));
             let html = `<table>
             <tr>
-              <th>ID</th><th>Nombre</th><th>Descripción</th><th>Disponibles</th><th>Estado</th>
+              <th>ID</th><th>Nombre</th><th>Descripción</th><th>Disponibles</th>
             </tr>`;
             querySnapshot.forEach(docSnap => {
                 const c = docSnap.data();
@@ -97,14 +97,7 @@
           <td>${c.descripcion}</td>
           <td>
             <input type="number" class="disponibles-input" data-id="${docSnap.id}" value="${c.disponibles}" min="0" style="width:70px" />
-            <button class="guardar-cantidad" data-id="${docSnap.id}">Guardar</button>
-          </td>
-          <td>
-            <select class="estado-coctel" data-id="${docSnap.id}">
-              <option value="Activo" ${c.estado === "Activo" ? "selected" : ""}>Activo</option>
-              <option value="Inactivo" ${c.estado === "Inactivo" ? "selected" : ""}>Inactivo</option>
-              <option value="Agotado" ${c.estado === "Agotado" ? "selected" : ""}>Agotado</option>
-            </select>
+            <button class="guardar-cantidad btn btn-primary" data-id="${docSnap.id}">Guardar</button>
           </td>
         </tr>`;
             });
@@ -151,13 +144,13 @@
             const querySnapshot = await getDocs(collection(db, "clientes"));
             let html = `<table>
                     <tr>
-                      <th>Nombre</th><th>Apellidos</th><th>Correo</th><th>Teléfono</th>
+                      <th>Nombre</th><th>Empresa</th><th>Correo</th><th>Teléfono</th>
                     </tr>`;
             querySnapshot.forEach(doc => {
                 const c = doc.data();
                 html += `<tr>
                   <td>${c.nombre}</td>
-                  <td>${c.apellidos}</td>
+                  <td>${c.empresa}</td>
                   <td>${c.correo}</td>
                   <td>${c.telefono}</td>
                 </tr>`;
@@ -174,13 +167,13 @@
             const querySnapshot = await getDocs(collection(db, "pedidos"));
             let html = `<table>
             <tr>
-              <th>Turno</th><th>Fecha</th><th>Estado</th><th>Detalle Cócteles</th>
+              <th>Turno</th><th>Fecha</th><th>Detalle Cócteles</th>
             </tr>`;
             querySnapshot.forEach(doc => {
                 const p = doc.data();
                 let detalle = "<ul>";
                 p.cocteles.forEach(c => {
-                    detalle += `<li>${c.nombre} - Cant: ${c.cantidad}</li>`;
+                    detalle += `<li>${c.nombre} - Cantidad: ${c.cantidad}</li>`;
                 });
                 detalle += "</ul>";
 
@@ -188,13 +181,6 @@
                 html += `<tr>
           <td>${p.turno}</td>
           <td>${p.fecha}</td>
-          <td>
-            <select class="estado-select" data-id="${doc.id}">
-              <option value="Pendiente" ${p.estado === "Pendiente" ? "selected" : ""}>Pendiente</option>
-              <option value="En proceso" ${p.estado === "En proceso" ? "selected" : ""}>En proceso</option>
-              <option value="Entregado" ${p.estado === "Entregado" ? "selected" : ""}>Entregado</option>
-            </select>
-          </td>
           <td>${detalle}</td>
         </tr>`;
             });
